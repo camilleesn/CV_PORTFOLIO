@@ -13,6 +13,7 @@ body {
     margin: 0;
     padding-top: 70px; /* Décale tout le site vers le bas pour laisser de la place au menu fixe */
     line-height: 1.6;
+    font-size: 85%;
 }
 
 /* --- 2. STYLE DES TITRES --- */
