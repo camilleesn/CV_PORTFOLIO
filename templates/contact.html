@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact - {{ user.nom }}</title>
+    
+    <!-- Lien vers ta feuille de style CSS externe -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    
+    <!-- Polices et icônes -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+ <!-- Conteneur des icônes décoratives d'arrière-plan -->
+            <div class="background-icons">
+                <i class="fa-solid fa-chart-line icon-bg-1"></i>
+                <i class="fa-solid fa-chart-pie icon-bg-2"></i>
+                <i class="fa-solid fa-laptop-code icon-bg-3"></i>
+                <i class="fa-solid fa-database icon-bg-4"></i>
+            </div>
+    <!-- Barre de navigation principale -->
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('accueil') }}">Accueil</a></li>
+            <li><a href="{{ url_for('academique') }}">Parcours académique</a></li>
+            <li><a href="{{ url_for('professionnel') }}">Parcours professionnel</a></li>
+            <li><a href="{{ url_for('projets') }}">Projets</a></li>
+            <li><a href="{{ url_for('contact') }}" class="active">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="contact">
+    <h1 class="section-title"></i> Contactez-moi </h1>
+
+    <div class="contact-container">
+        <div class="contact-card">
+            
+            <!-- Affichage d'un message de succès si le formulaire a été soumis -->
+            {% if success %}
+                <div class="alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
+                    <i class="fa-solid fa-check-circle"></i> Votre message a bien été envoyé ! Je vous répondrai rapidement.
+                </div>
+            {% endif %}
+
+            <form method="POST" action="https://formspree.io/f/mrpbayra" class="form-contact">
+                <div class="form-group">
+                    <label for="nom"><i class="fa-solid fa-user"></i> Votre nom</label>
+                    <input type="text" id="nom" name="nom" required placeholder="Ex: Camille Esnault">
+                </div>
+
+                <div class="form-group">
+                    <label for="email"><i class="fa-solid fa-at"></i> Votre email</label>
+                    <input type="email" id="email" name="email" required placeholder="Ex: camilleesnault.pro@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="entreprise"><i class="fa-solid fa-building"></i> Votre entreprise</label>
+                    <input type="entreprise" id="entreprise" name="entreprise" required placeholder="...">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="message"><i class="fa-solid fa-message"></i> Votre message</label>
+                    <textarea id="message" name="message" rows="5" required placeholder="Écrivez votre message ici..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-paper-plane"></i> Envoyer
+                </button>
+            </form>
+
+        </div>
+    </div>
+</section>
+
+<!-- Pied de page avec l'ensemble des coordonnées -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p><i class="fa-solid fa-phone"></i> 06 73 66 97 55</p>
+            <p><i class="fa-solid fa-envelope"></i> <a href="mailto:camilleesnault.pro@gmail.com">camilleesnault.pro@gmail.com</a></p>
+            <p><i class="fa-solid fa-location-dot"></i> Souleuvre en Bocage</p>
+            <p><i class="fa-solid fa-car"></i> Titulaire du permis B</p>
+        </div>
+    </footer>
+
+</body>
+</html>

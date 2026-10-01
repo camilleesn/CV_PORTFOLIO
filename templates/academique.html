@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Parcours académique - Camille Esnault</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- Barre de navigation -->
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('accueil') }}">Accueil</a></li>
+            <li><a href="{{ url_for('academique') }}" class="active">Parcours académique</a></li>
+            <li><a href="{{ url_for('professionnel') }}">Parcours professionnel</a></li>
+            <li><a href="{{ url_for('projets') }}">Projets</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Section : Parcours Académique -->
+    <section id="academique">
+          <!-- Conteneur des icônes décoratives d'arrière-plan -->
+            <div class="background-icons">
+                <i class="fa-solid fa-chart-line icon-bg-1"></i>
+                <i class="fa-solid fa-chart-pie icon-bg-2"></i>
+                <i class="fa-solid fa-laptop-code icon-bg-3"></i>
+                <i class="fa-solid fa-database icon-bg-4"></i>
+            </div>
+            
+
+        <h2 class="section-title"> Mon parcours académique</h2>
+
+        <div class="parcours-container">
+            
+            <!-- Master Science des Données -->
+            <div class="parcours-card">
+                <div class="card-header">
+                    <span class="annee-badge">2024 - 2026</span>
+                    <h3>Master Science des Données</h3>
+                </div>
+                <p class="etablissement"><i class="fa-solid fa-university"></i> Université Bretagne Sud (Vannes)</p>
+                
+                <div class="formation-details">
+                    <p><strong>Aperçu des enseignements :</strong></p>
+                    <ul class="chips-list">
+                        <li>Modèles linéaires généralisés</li>
+                        <li>Intelligence Artificielle & Deep Learning</li>
+                        <li>Méthodes chronologiques et Prévisions</li>
+                        <li>Apprentissage statistique & calcul haute performance</li>
+                        <li>Statistique bayésienne et MCMC</li>
+                        <li>Traitement de données structurées, signaux et images</li>
+                        <li>Optimisation & Business Intelligence</li>
+                        <li>Projet universitaire & Alternance</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- BUT Science des Données -->
+            <div class="parcours-card">
+                <div class="card-header">
+                    <span class="annee-badge">2021 - 2024</span>
+                    <h3>BUT Science des Données</h3>
+                </div>
+                <p class="option-texte">Parcours Exploration et Modélisation Statistique (Options Mathématiques et Marketing)</p>
+                <p class="etablissement"><i class="fa-solid fa-university"></i> IUT de Vannes</p>
+
+                <div class="formation-details">
+                    <p><strong>Compétences clés acquises :</strong></p>
+                    <ul class="chips-list">
+                        <li>Analyser et valoriser les données (statistiques, reporting)</li>
+                        <li>Développer des programmes pour traiter les données</li>
+                        <li>Apporter des solutions grâce à l'informatique décisionnelle</li>
+                        <li>Bases de données relationnelles (SQL) & Datavisualisation</li>
+                        <li>Gestion de projet et communication des résultats</li>
+                        <li>Projet universitaire & Stage</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Baccalauréat -->
+            <div class="parcours-card">
+                <div class="card-header">
+                    <span class="annee-badge">2018 - 2021</span>
+                    <h3>Baccalauréat Général (Mention Assez Bien)</h3>
+                </div>
+                <p class="option-texte">Spécialités Mathématiques & Physique-Chimie + Option Mathématiques expertes</p>
+                <p class="etablissement"><i class="fa-solid fa-school"></i> Lycée Marie Curie de Vire</p>
+            </div>
+
+        </div>
+    </section>
+
+</body>
+</html>

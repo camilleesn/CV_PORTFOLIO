@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <!-- Encodage et titre de la page web -->
+    <meta charset="UTF-8">
+    <title>CV Camille Esnault</title>
+    
+    <!-- Lien vers ta feuille de style CSS externe -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    
+    <!-- Importation de la police Google Fonts (Montserrat) et des icônes Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- Barre de navigation principale en haut de page -->
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('accueil') }}" class="active">Accueil</a></li>
+            <li><a href="{{ url_for('academique') }}">Parcours académique</a></li>
+            <li><a href="{{ url_for('professionnel') }}">Parcours professionnel</a></li>
+            <li><a href="{{ url_for('projets') }}">Projets</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Section principale de la page d'accueil -->
+    <section id="accueil">
+            
+        <!-- Conteneur des icônes décoratives d'arrière-plan -->
+        <div class="background-icons">
+            <i class="fa-solid fa-chart-line icon-bg-1"></i>
+            <i class="fa-solid fa-chart-pie icon-bg-2"></i>
+            <i class="fa-solid fa-laptop-code icon-bg-3"></i>
+            <i class="fa-solid fa-database icon-bg-4"></i>
+        </div>
+        
+        <!-- Conteneur Flexbox pour aligner la photo et le texte côte à côte -->
+        <div class="bio-container">
+            
+            <!-- Bloc circulaire pour la photo de profil -->
+            <div class="photo-placeholder">
+                <img src="{{ url_for('static', filename='img/photo_CamilleESNAULT.jpeg') }}" alt="Photo de Camille Esnault">
+            </div>
+            
+            <!-- Bloc contenant le texte de présentation à droite de la photo -->
+            <div class="texte-accueil">
+                
+                <!-- Groupe pour lier ton nom et ton sous-titre l'un sous l'autre -->
+                <div class="titre-groupe">
+                    <h1 class="titre-principal">{{ user.nom }}</h1>
+                    <p class="accroche-titre">Data Analyst & Data Scientist Junior</p>
+                </div>
+                
+                <!-- Paragraphe de description -->
+                <p class="bio-detail">
+                    Diplômée d'un master en <span class="mot-cle">Science des Données</span> avec une expertise de 3 années d'alternance, 
+                    j'aime travailler les données afin d'améliorer la performance commerciale. <br/>
+                    Découvrez mon <span class="mot-cle">parcours</span>, mes <span class="mot-cle">projets</span> et contactez-moi pour toute opportunité entre la Normandie et la Bretagne !
+                </p>
+            </div>
+
+        </div> <!-- Fin de bio-container -->
+
+        <!-- Les logiciels -->
+
+        <div class="skills-section">
+        <h1 class="section-title">Logiciels & Outils maîtrisés</h1>
+            <div class="skills-matrix">
+                <div class="skill-badge"><img src="{{ url_for('static', filename='img/logo_python.png') }}" alt="Python"></div>
+                <div class="skill-badge"><img src="{{ url_for('static', filename='img/logo_R.png') }}" alt="R"></div>
+                <div class="skill-badge"><img src="{{ url_for('static', filename='img/logo_POWERBI.jpg') }}" alt="Power BI"></div>
+                <div class="skill-badge"><img src="{{ url_for('static', filename='img/logo_MICRO.png') }}" alt="MicroStrategy"></div>
+                <div class="skill-badge"><img src="{{ url_for('static', filename='img/logo_TABLEAU.png') }}" alt="Tableau"></div>
+                <div class="skill-badge"><img src="{{ url_for('static', filename='img/logo_SQL.png') }}" alt="SQL"></div>
+                <div class="skill-badge"><img src="{{ url_for('static', filename='img/logo_QGIS.png') }}" alt="QGIS"></div>
+                <div class="skill-badge"><img src="{{ url_for('static', filename='img/logo_SAS.png') }}" alt="SAS"></div>
+                <div class="skill-badge"><img src="{{ url_for('static', filename='img/logo_EXCEL.png') }}" alt="Excel"></div>
+                <div class="skill-badge"><img src="{{ url_for('static', filename='img/logo_WORD.png') }}" alt="Word"></div>
+                <div class="skill-badge"><img src="{{ url_for('static', filename='img/logo_PPT.jpg') }}" alt="PowerPoint"></div>
+            </div>
+        </div>
+
+        <!-- Section : Comprendre les métiers de la Data -->
+        <div id="metiers-data">
+            <h1 class="section-title">Les métiers que je souhaite exercer</h1>
+            <div class="metiers-container">
+                <!-- Grille des 3 rôles -->
+                <div class="cartes-metiers">
+                    
+                    <!-- Carte 1 : Data Analyst -->
+                    <div class="carte-metier">
+                        <div class="carte-icone"><i class="fa-solid fa-chart-line"></i></div>
+                        <h3>Data Analyst</h3>
+                        <p>
+                            Véritable passerelle entre les chiffres et la stratégie, il transforme les données brutes en tableaux de bord pour éclairer la prise de décision.
+                        </p>
+                    </div>
+                    
+                    <!-- Carte 2 : Data Scientist -->
+                    <div class="carte-metier">
+                        <div class="carte-icone"><i class="fa-solid fa-brain"></i></div>
+                        <h3>Data Scientist</h3>
+                        <p>
+                            Il conçoit des modèles prédictifs et des algorithmes pour anticiper les tendances futures, automatiser les analyses et résoudre des problématiques complexes.
+                        </p>
+                    </div>
+                    
+                    <!-- Carte 3 : Data Engineer -->
+                    <div class="carte-metier">
+                        <div class="carte-icone"><i class="fa-solid fa-server"></i></div>
+                        <h3>Data Engineer</h3>
+                        <p>
+                            Véritable architecte, il construit et optimise les pipelines de données pour garantir un accès fluide, sécurisé et structuré à l'information.
+                        </p>
+                    </div>
+                    
+                </div> <!-- Fin de cartes-metiers -->
+
+                <!-- Phrase de conclusion sur le profil junior -->
+                <div class="conclusion-profil">
+                    <p>
+                        Ayant un profil junior, je souhaite développer mes compétences sur l'ensemble de ces métiers, de l'ingénierie à la modélisation statistique. 
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Section : Centres d'intérêt -->
+        <div id="centres-interets">
+            <h2 class="section-title">Centres d'intérêt</h2>
+            <div class="interets-grid">
+                <div class="interet-card">
+                    <i class="fa-solid fa-bicycle"></i>
+                    <span>Cyclisme</span>
+                </div>
+                <div class="interet-card">
+                    <i class="fa-solid fa-person-running"></i>
+                    <span>Course à pied</span>
+                </div>
+                <div class="interet-card">
+                    <i class="fa-solid fa-mountain"></i>
+                    <span>Trek & Bivouac</span>
+                </div>
+                <div class="interet-card">
+                    <i class="fa-solid fa-earth-europe"></i>
+                    <span>Voyages</span>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</body>
+</html>

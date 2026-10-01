@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Projets - Camille Esnault</title>
+    
+    <!-- Lien vers ta feuille de style CSS externe -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    
+    <!-- Polices et icônes -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- Barre de navigation principale -->
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('accueil') }}">Accueil</a></li>
+            <li><a href="{{ url_for('academique') }}">Parcours académique</a></li>
+            <li><a href="{{ url_for('professionnel') }}">Parcours professionnel</a></li>
+            <li><a href="{{ url_for('projets') }}" class="active">Projets</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Section : Projets -->
+    <section id="projets">
+
+         <!-- Conteneur des icônes décoratives d'arrière-plan -->
+            <div class="background-icons">
+                <i class="fa-solid fa-chart-line icon-bg-1"></i>
+                <i class="fa-solid fa-chart-pie icon-bg-2"></i>
+                <i class="fa-solid fa-laptop-code icon-bg-3"></i>
+                <i class="fa-solid fa-database icon-bg-4"></i>
+            </div>
+
+        <h2 class="section-title"> Projets en statistique et informatique décisionnelle</h2>
+
+        <div class="parcours-container">
+            
+            <!-- Projet 1 : Médecins généralistes -->
+            <div class="parcours-card">
+                <div class="card-header">
+                    <span class="annee-badge">01 / 2025</span>
+                    <div class="job-title-wrapper">
+                        <h3>Analyse de la pénurie des médecins généralistes</h3>
+                    </div>
+                </div>
+                <p class="option-texte" style="margin-top: 5px; font-style: italic; color: var(--couleur-secondaire);">2 étudiantes</p>
+
+                <div class="formation-details">
+                    <ul class="pro-list">
+                        <li>Développement d'une application interactive (<em>R-Shiny</em>).</li>
+                        <li>Conception d'un tableau de bord (<em>Tableau</em>).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Projet 2 : Chambres d'hôtel -->
+            <div class="parcours-card">
+                <div class="card-header">
+                    <span class="annee-badge">01 / 2024</span>
+                    <div class="job-title-wrapper">
+                        <h3>Prédiction des annulations des chambres d'hôtel avec Python</h3>
+                    </div>
+                </div>
+                <p class="option-texte" style="margin-top: 5px; font-style: italic; color: var(--couleur-secondaire);">3 étudiants</p>
+
+                <div class="formation-details">
+                    <ul class="pro-list">
+                        <li>Extraction et traitement des données issues de l'INSEE.</li>
+                        <li>Analyses descriptives de la variable à expliquer.</li>
+                        <li>Création de deux modèles de décision : <strong>arbre de décision</strong> et <strong>scoring</strong>.</li>
+                        <li>Évaluation des performances des modèles (<strong>courbe ROC</strong>, <strong>matrice de confusion</strong>).</li>
+                        <li>Comparaison des deux méthodes.</li>
+                        <li>Prédiction des annulations.</li>
+                        <li>Restitution orale du résultat.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Projet 3 : Trafic vélo Rennes -->
+            <div class="parcours-card">
+                <div class="card-header">
+                    <span class="annee-badge">09 / 2022</span>
+                    <div class="job-title-wrapper">
+                        <h3>Prévision du trafic de vélo dans la ville de Rennes avec le langage R</h3>
+                    </div>
+                </div>
+                <p class="option-texte" style="margin-top: 5px; font-style: italic; color: var(--couleur-secondaire);">4 étudiants</p>
+
+                <div class="formation-details">
+                    <ul class="pro-list">
+                        <li>Étude graphique de la série (<strong>tendance</strong>, <strong>saisonnalité</strong>, <strong>résidus</strong>).</li>
+                        <li>Prévisions du nombre de vélos pour l'année 2022.</li>
+                        <li>Restitution écrite du résultat (rapport + notebook R).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Carte : Projets à venir -->
+            <div class="parcours-card project-coming-soon">
+                <div class="card-header" style="justify-content: center; text-align: center;">
+                    <div class="job-title-wrapper" style="flex-direction: column; gap: 8px;">
+                        <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.8em; color: var(--couleur-primaire);"></i>
+                        <h3 style="color: var(--couleur-primaire);">D'autres projets sont à venir...</h3>
+                    </div>
+                </div>
+                <p style="text-align: center; color: var(--couleur-secondaire); margin-top: 10px; font-size: 0.95em;">
+                    De nouveaux projets seront bientôt ajoutés ici !
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+</body>
+</html>
