@@ -435,6 +435,14 @@ nav a.active {
     gap: 20px;
 }
 
+@media screen and (max-width: 768px) {
+    body {
+        padding-top: 50px; /* Réduit un peu l'espace en haut pour le menu sur mobile */
+        font-size: 80%;    /* Ajuste la taille du texte pour les petits écrans */
+    }
+    
+    /* Tu peux aussi ajuster tes marges ou la taille de ta photo ici */
+}
 .form-group {
     display: flex;
     flex-direction: column;
