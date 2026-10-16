@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="CV de {{ user.nom }} — {{ user.titre }}">
+    <title>{{ user.nom }} — {{ user.titre }}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <!-- Barre de progression de lecture -->
+    <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+
+    <!-- ===================== NAVIGATION ===================== -->
+    <header class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="#presentation" class="nav-logo" aria-label="Retour en haut">
+                <span>CE</span>
+            </a>
+
+            <nav class="nav-links" id="nav-links" aria-label="Sections">
+                <a href="#presentation">Présentation</a>
+                <a href="#parcours">Parcours</a>
+                <a href="#projets">Projets</a>
+                <a href="#contact" class="nav-cta">Me contacter</a>
+            </nav>
+
+            <button class="nav-toggle" id="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ===================== 1. PRÉSENTATION ===================== -->
+        <section id="presentation" class="hero">
+            <div class="container hero-grid">
+
+                <div class="hero-text">
+                    <div class="eyebrow-row reveal">
+                        <p class="eyebrow"><span class="dot"></span> Disponible dès janvier 2027 · Normandie & Bretagne</p>
+                        <p class="eyebrow eyebrow--away"><i class="fa-solid fa-plane-departure"></i> Indisponible en novembre 2026</p>
+                    </div>
+                    <h1 class="hero-name reveal">Camille <span>Esnault</span></h1>
+                    <p class="hero-role reveal" aria-label="Data Analyst, Data Scientist, Data Engineer">
+                        <span class="role-prefix">Junior</span>
+                        <span class="typed" id="typed" data-words="Data Analyst|Data Scientist|Data Engineer">Data Analyst</span><span class="caret" aria-hidden="true"></span>
+                    </p>
+                    <p class="hero-bio reveal">
+                        Diplômée d'un <strong>Master Science des Données</strong>, avec <strong>3 années d'alternance</strong>
+                        au Crédit Agricole de Normandie. J'aime faire parler les données pour
+                        <strong>améliorer la performance commerciale</strong> : préparation, modélisation et restitution.
+                    </p>
+                    <div class="seeking reveal" aria-label="Ce que je recherche">
+                        <div class="seek seek--main">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <span class="seek-label">Je recherche</span>
+                            <strong>Un CDI</strong>
+                            <span class="seek-sub">Normandie & Bretagne</span>
+                        </div>
+                        <div class="seek">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <span class="seek-label">Disponible</span>
+                            <strong>Janvier 2027</strong>
+                            <span class="seek-sub">dès le début d'année</span>
+                        </div>
+                        <div class="seek">
+                            <i class="fa-solid fa-lightbulb"></i>
+                            <span class="seek-label">Ouverte à</span>
+                            <strong>Freelance</strong>
+                            <span class="seek-sub">& projets d'entreprise</span>
+                        </div>
+                    </div>
+                    <div class="hero-actions reveal">
+                        <a href="#contact" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Me contacter</a>
+                        <a href="{{ url_for('static', filename=user.cv_pdf) }}" class="btn btn-ghost" target="_blank" rel="noopener"><i class="fa-solid fa-file-arrow-down"></i> CV en PDF</a>
+                        <a href="{{ user.linkedin }}" class="btn btn-icon" target="_blank" rel="noopener" aria-label="Mon profil LinkedIn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                    <ul class="hero-meta reveal">
+                        <li><i class="fa-solid fa-location-dot"></i> {{ user.ville }}</li>
+                        <li><i class="fa-solid fa-car"></i> Permis B</li>
+                        <li><i class="fa-solid fa-envelope"></i> <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
+                    </ul>
+                </div>
+
+                <div class="hero-photo reveal">
+                    <div class="photo-frame">
+                        <img src="{{ url_for('static', filename='img/photo_CamilleESNAULT.jpeg') }}" alt="Photo de Camille Esnault">
+                    </div>
+                    <ul class="keywords" aria-label="En bref">
+                        <li class="kw kw-chip kw-chip--two" style="--start:-90deg"><strong>Bac +5</strong><span>Science des données</span></li>
+                        <li class="kw kw-chip" style="--start:-19deg">Deep Learning</li>
+                        <li class="kw kw-chip" style="--start:190deg">Analyse de données</li>
+                        <li class="kw kw-chip kw-chip--two" style="--start:52deg"><strong>3 ans d'expérience</strong><span>domaine bancaire</span></li>
+                        <li class="kw kw-chip" style="--start:121deg">Data Science</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Chiffres clés -->
+            <div class="container">
+                <div class="stats reveal">
+                    <div class="stat"><strong>3</strong><span>années d'alternance</span></div>
+                    <div class="stat"><strong>5</strong><span>années d'études en data</span></div>
+                    <div class="stat"><strong>11</strong><span>logiciels & langages</span></div>
+                    <div class="stat"><strong>3</strong><span>métiers de la data visés</span></div>
+                </div>
+            </div>
+
+            <!-- Logiciels -->
+            <div class="container block">
+                <div class="block-head reveal">
+                    <h2 class="block-title">Logiciels & outils maîtrisés</h2>
+                </div>
+                <div class="tools reveal">
+                    {% set outils = [
+                        ('logo_python.png','Python'), ('logo_R.png','R'), ('logo_SQL.png','SQL'),
+                        ('logo_SAS.png','SAS'), ('logo_POWERBI.jpg','Power BI'), ('logo_TABLEAU.png','Tableau'),
+                        ('logo_MICRO.png','MicroStrategy'), ('logo_QGIS.png','QGIS'), ('logo_EXCEL.png','Excel'),
+                        ('logo_WORD.png','Word'), ('logo_PPT.jpg','PowerPoint')
+                    ] %}
+                    {% for fichier, nom in outils %}
+                    <div class="tool">
+                        <div class="tool-logo"><img src="{{ url_for('static', filename='img/' ~ fichier) }}" alt="" loading="lazy"></div>
+                        <span>{{ nom }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Métiers visés -->
+            <div class="container block">
+                <div class="block-head reveal">
+                    <h2 class="block-title">Les métiers que je souhaite exercer</h2>
+                </div>
+                <div class="jobs">
+                    <article class="job reveal">
+                        <div class="job-icon"><i class="fa-solid fa-chart-line"></i></div>
+                        <h3>Data Analyst</h3>
+                        <p>Passerelle entre les chiffres et la stratégie : transformer les données brutes en tableaux de bord pour éclairer la prise de décision.</p>
+                    </article>
+                    <article class="job reveal">
+                        <div class="job-icon"><i class="fa-solid fa-brain"></i></div>
+                        <h3>Data Scientist</h3>
+                        <p>Concevoir des modèles prédictifs et des algorithmes pour anticiper les tendances, automatiser les analyses et résoudre des problèmes complexes.</p>
+                    </article>
+                    <article class="job reveal">
+                        <div class="job-icon"><i class="fa-solid fa-server"></i></div>
+                        <h3>Data Engineer</h3>
+                        <p>Construire et optimiser les pipelines de données pour garantir un accès fluide, sécurisé et structuré à l'information.</p>
+                    </article>
+                </div>
+                <p class="note reveal">
+                    <i class="fa-solid fa-seedling"></i>
+                    Profil junior, je souhaite développer mes compétences sur l'ensemble de ces métiers, de l'ingénierie à la modélisation statistique.
+                </p>
+            </div>
+
+            <!-- Centres d'intérêt -->
+            <div class="container block" id="interets">
+                <div class="block-head reveal">
+                    <h2 class="block-title">Mes centres d'intérêt</h2>
+                </div>
+                <div class="hobbies">
+                    <div class="hobby reveal">
+                        <div class="hobby-icon"><i class="fa-solid fa-person-biking"></i></div>
+                        <h3>Vélo</h3>
+                        <p>Je participe régulièrement à des courses cyclistes.</p>
+                    </div>
+                    <div class="hobby reveal">
+                        <div class="hobby-icon"><i class="fa-solid fa-person-running"></i></div>
+                        <h3>Course à pied</h3>
+                        <p>J'aime me dépasser et repousser mes limites.</p>
+                    </div>
+                    <div class="hobby reveal">
+                        <div class="hobby-icon"><i class="fa-solid fa-mountain-sun"></i></div>
+                        <h3>Trek</h3>
+                        <p>Randonnée, entre montagne et mer.</p>
+                    </div>
+                    <div class="hobby reveal">
+                        <div class="hobby-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                        <h3>Engagement</h3>
+                        <p>Bénévole à la communication de mon club de vélo, et bénévole sur l'Ultra Marin (juin 2026).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ===================== 2. PARCOURS ===================== -->
+        <section id="parcours" class="section section--tinted">
+            <div class="container parcours-layout">
+                <aside class="parcours-side">
+                <header class="section-head reveal">
+                    <span class="section-num">02</span>
+                    <h2>Mon parcours</h2>
+                    <p>Cinq années d'études en data, accompagnées de trois années d'alternance.</p>
+                </header>
+
+                <nav class="tabs reveal" aria-label="Parties du parcours">
+                    <a class="tab is-active" href="#experiences" data-group="pro"><i class="fa-solid fa-briefcase"></i> Expériences</a>
+                    <a class="tab" href="#formations" data-group="edu"><i class="fa-solid fa-graduation-cap"></i> Formations</a>
+                </nav>
+
+                <div class="ticker reveal" aria-hidden="true">
+                    <span class="ticker-type" id="ticker-type">Expérience</span>
+                    <span class="ticker-date" id="ticker-date">2023 — 2026</span>
+                    <span class="ticker-title" id="ticker-title">Data Analyst</span>
+                    <div class="ticker-foot">
+                        <span id="ticker-count">01 / 02</span>
+                        <div class="ticker-bar"><span id="ticker-bar"></span></div>
+                    </div>
+                </div>
+                </aside>
+
+                <div class="parcours-main">
+
+                <!-- ---------- Expériences professionnelles ---------- -->
+                <div class="tl-group" id="experiences" data-group="pro">
+                <h3 class="tl-group-title reveal"><i class="fa-solid fa-briefcase"></i> Expériences professionnelles</h3>
+                <ol class="timeline">
+                    <li class="tl-fill" aria-hidden="true"></li>
+
+                    <!-- Crédit Agricole -->
+                    <li class="tl-item reveal" data-type="pro">
+                        <div class="tl-marker"><i class="fa-solid fa-briefcase"></i></div>
+                        <article class="card">
+                            <div class="card-top">
+                                <img src="{{ url_for('static', filename='img/logo_CA.png') }}" alt="Logo Crédit Agricole" class="org-logo">
+                                <div class="card-title">
+                                    <h3>Data Analyst</h3>
+                                    <p class="org">Crédit Agricole de Normandie · <em>Alternance de 3 ans</em></p>
+                                </div>
+                                <span class="date">2023 — 2026</span>
+                            </div>
+
+                            <div class="missions-flat">
+                                <div class="mf">
+                                    <h4><span class="mf-num">1</span> Projet de fin d'études : Data Science</h4>
+                                    <ul class="kv">
+                                        <li><span class="k">Objectif</span><span class="v">Prédire les productions d'assurances.</span></li>
+                                        <li><span class="k">Analyse</span><span class="v">Étude des séries temporelles : stationnarité, saisonnalité, autocorrélation.</span></li>
+                                        <li><span class="k">Modélisation</span><span class="v">SARIMAX, XGBoost et Holt-Winters pour la prévision des jalons assurances.</span></li>
+                                        <li><span class="k">Optimisation</span><span class="v">Sélection du modèle via le <strong>MAPE</strong>.</span></li>
+                                    </ul>
+                                </div>
+                                <div class="mf">
+                                    <h4><span class="mf-num">2</span> Pilotage de l'adossement habitat</h4>
+                                    <ul class="kv">
+                                        <li><span class="k">Objectif</span><span class="v">Maximiser le taux d'équipement en assurance après un crédit immobilier.</span></li>
+                                        <li><span class="k">Data préparation</span><span class="v">Fusion des univers Crédit et Assurance (<em>SAS, SQL</em>).</span></li>
+                                        <li><span class="k">Dataviz</span><span class="v">Dashboard de pilotage commercial pour les directeurs d'agence (<em>MicroStrategy</em>).</span></li>
+                                        <li><span class="k">Scoring</span><span class="v">Régression logistique (interprétation par <strong>odds ratios</strong>) et score des dossiers prioritaires à adosser.</span></li>
+                                    </ul>
+                                </div>
+                                <div class="mf">
+                                    <h4><span class="mf-num">3</span> Missions de datavisualisation</h4>
+                                    <ul class="kv">
+                                        <li><span class="k">Portail</span><span class="v">Tableaux de bord centralisés par univers métier (Banque au quotidien, Collecte, Crédit, Conquête).</span></li>
+                                        <li><span class="k">Risques</span><span class="v">Segmentation des clients à risque (Sains, Sensibles, Défaut) selon Bâle II.</span></li>
+                                        <li><span class="k">Suivi commercial</span><span class="v">Analyse des résultats des agences de Normandie.</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="chips">
+                                <span>SAS</span><span>SQL</span><span>Python</span><span>MicroStrategy</span><span>Séries temporelles</span><span>Scoring</span>
+                            </div>
+                        </article>
+                    </li>
+
+                    <!-- Cotral Lab -->
+                    <li class="tl-item reveal" data-type="pro">
+                        <div class="tl-marker"><i class="fa-solid fa-briefcase"></i></div>
+                        <article class="card">
+                            <div class="card-top">
+                                <img src="{{ url_for('static', filename='img/logo_cotral.jpg') }}" alt="Logo Cotral Lab" class="org-logo">
+                                <div class="card-title">
+                                    <h3>Data Analyst</h3>
+                                    <p class="org">Cotral Lab · <em>Stage de 3 mois</em></p>
+                                </div>
+                                <span class="date">2022</span>
+                            </div>
+                            <ul class="kv kv--solo">
+                                <li><span class="k">Géodonnées</span><span class="v">Système de données géographiques à partir des codes postaux des commerciaux (fichiers JSON par pays).</span></li>
+                                <li><span class="k">Référentiel</span><span class="v">Découpage géographique selon les secteurs de l'entreprise (<em>R</em>).</span></li>
+                                <li><span class="k">Indicateurs</span><span class="v">Projection du chiffre d'affaires, des prix de vente et des objectifs par secteur (<em>Power BI</em>).</span></li>
+                            </ul>
+                            <div class="chips">
+                                <span>R</span><span>Power BI</span><span>JSON</span><span>Géodonnées</span>
+                            </div>
+                        </article>
+                    </li>
+                </ol>
+                </div>
+
+                <!-- ---------- Formations ---------- -->
+                <div class="tl-group" id="formations" data-group="edu">
+                <h3 class="tl-group-title reveal"><i class="fa-solid fa-graduation-cap"></i> Formations</h3>
+                <ol class="timeline">
+                    <li class="tl-fill" aria-hidden="true"></li>
+
+                    <!-- Master -->
+                    <li class="tl-item reveal" data-type="edu">
+                        <div class="tl-marker tl-marker--edu"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <article class="card">
+                            <div class="card-top">
+                                <div class="card-title">
+                                    <h3>Master Science des Données</h3>
+                                    <p class="org">Université Bretagne Sud · Vannes</p>
+                                </div>
+                                <span class="date">2024 — 2026</span>
+                            </div>
+                            <div class="chips chips--soft">
+                                <span>Modèles linéaires généralisés</span>
+                                <span>IA & Deep Learning</span>
+                                <span>Séries chronologiques & prévision</span>
+                                <span>Apprentissage statistique & calcul haute performance</span>
+                                <span>Statistique bayésienne & MCMC</span>
+                                <span>Données structurées, signaux & images</span>
+                                <span>Optimisation & Business Intelligence</span>
+                            </div>
+                        </article>
+                    </li>
+
+                    <!-- BUT -->
+                    <li class="tl-item reveal" data-type="edu">
+                        <div class="tl-marker tl-marker--edu"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <article class="card">
+                            <div class="card-top">
+                                <div class="card-title">
+                                    <h3>BUT Science des Données</h3>
+                                    <p class="org">IUT de Vannes · <em>Exploration et Modélisation Statistique (options Mathématiques et Marketing)</em></p>
+                                </div>
+                                <span class="date">2021 — 2024</span>
+                            </div>
+                            <div class="chips chips--soft">
+                                <span>Analyse & valorisation des données</span>
+                                <span>Programmation pour le traitement des données</span>
+                                <span>Informatique décisionnelle</span>
+                                <span>Bases de données SQL & datavisualisation</span>
+                                <span>Gestion de projet & communication</span>
+                            </div>
+                        </article>
+                    </li>
+
+                    <!-- Bac -->
+                    <li class="tl-item reveal" data-type="edu">
+                        <div class="tl-marker tl-marker--edu"><i class="fa-solid fa-school"></i></div>
+                        <article class="card card--compact">
+                            <div class="card-top">
+                                <div class="card-title">
+                                    <h3>Baccalauréat général <small>· mention Assez Bien</small></h3>
+                                    <p class="org">Lycée Marie Curie, Vire · <em>Spécialités Mathématiques & Physique-Chimie, option Mathématiques expertes</em></p>
+                                </div>
+                                <span class="date">2018 — 2021</span>
+                            </div>
+                        </article>
+                    </li>
+                </ol>
+                </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ===================== 3. PROJETS ===================== -->
+        <section id="projets" class="hs">
+            <div class="hs-sticky">
+            <div class="container hs-head">
+                <header class="section-head reveal">
+                    <span class="section-num">03</span>
+                    <h2>Mes projets</h2>
+                    <p>Projets universitaires en statistique et informatique décisionnelle, menés en équipe.</p>
+                </header>
+
+                <div class="hs-progress reveal">
+                    <span class="hs-count"><strong id="hs-current">01</strong> / <span id="hs-total">04</span></span>
+                    <div class="hs-bar"><span id="hs-bar"></span></div>
+                    <span class="hs-hint hs-hint--desk"><i class="fa-solid fa-arrow-down"></i> Faites défiler</span>
+                    <span class="hs-hint hs-hint--mob"><i class="fa-solid fa-hand-pointer"></i> Glissez</span>
+                </div>
+            </div>
+            <div class="hs-viewport" id="hs-viewport">
+                <div class="projects hs-track" id="hs-track">
+                    <article class="project reveal">
+                        <div class="project-head">
+                            <div class="project-icon"><i class="fa-solid fa-user-doctor"></i></div>
+                            <span class="date">Janv. 2025</span>
+                        </div>
+                        <h3>Analyse de la pénurie des médecins généralistes</h3>
+                        <p class="team"><i class="fa-solid fa-users"></i> Binôme</p>
+                        <ul class="list">
+                            <li>Développement d'une application interactive (<em>R-Shiny</em>).</li>
+                            <li>Conception d'un tableau de bord (<em>Tableau</em>).</li>
+                        </ul>
+                        <div class="chips"><span>R-Shiny</span><span>Tableau</span><span>Dataviz</span></div>
+                    </article>
+
+                    <article class="project reveal">
+                        <div class="project-head">
+                            <div class="project-icon"><i class="fa-solid fa-hotel"></i></div>
+                            <span class="date">Janv. 2024</span>
+                        </div>
+                        <h3>Prédiction des annulations de chambres d'hôtel</h3>
+                        <p class="team"><i class="fa-solid fa-users"></i> Équipe de 3</p>
+                        <ul class="list">
+                            <li>Extraction et traitement des données, analyses descriptives de la variable cible.</li>
+                            <li>Deux modèles de décision : <strong>arbre de décision</strong> et <strong>scoring</strong>.</li>
+                            <li>Évaluation (<strong>courbe ROC</strong>, <strong>matrice de confusion</strong>), comparaison et prédiction.</li>
+                            <li>Restitution orale des résultats.</li>
+                        </ul>
+                        <div class="chips"><span>Python</span><span>Classification</span><span>ROC</span></div>
+                    </article>
+
+                    <article class="project reveal">
+                        <div class="project-head">
+                            <div class="project-icon"><i class="fa-solid fa-bicycle"></i></div>
+                            <span class="date">Sept. 2022</span>
+                        </div>
+                        <h3>Prévision du trafic vélo à Rennes</h3>
+                        <p class="team"><i class="fa-solid fa-users"></i> Équipe de 4</p>
+                        <ul class="list">
+                            <li>Étude graphique de la série : <strong>tendance</strong>, <strong>saisonnalité</strong>, <strong>résidus</strong>.</li>
+                            <li>Prévision du nombre de vélos pour l'année 2022.</li>
+                            <li>Restitution écrite (rapport + notebook R).</li>
+                        </ul>
+                        <div class="chips"><span>R</span><span>Séries temporelles</span><span>Prévision</span></div>
+                    </article>
+
+                    <article class="project project--soon reveal">
+                        <i class="fa-solid fa-plus"></i>
+                        <h3>D'autres projets arrivent…</h3>
+                        <p>De nouveaux projets seront bientôt ajoutés ici.</p>
+                    </article>
+                </div>
+            </div>
+            </div>
+        </section>
+
+
+        <!-- ===================== CONTACT ===================== -->
+        <section id="contact" class="section contact">
+            <div class="container contact-grid">
+                <div class="contact-intro reveal">
+                    <span class="section-num section-num--light">04</span>
+                    <h2>Travaillons ensemble</h2>
+                    <p>Je recherche un <strong>CDI en Normandie ou en Bretagne</strong>, et je reste ouverte à une <strong>mission freelance</strong> ou à un projet data intéressant au sein de votre entreprise. Je suis <strong>disponible dès janvier 2027</strong>. Écrivez-moi, je vous répondrai rapidement.</p>
+                    <a class="needs" href="#contact-form">
+                        <span class="needs-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+                        <span class="needs-text">
+                            <strong>Votre entreprise a des besoins data ?</strong>
+                            <span>Site internet · analyse de données · prédiction…</span>
+                        </span>
+                        <span class="needs-cta">Contactez-moi <i class="fa-solid fa-arrow-right"></i></span>
+                    </a>
+                    <ul class="contact-list">
+                        <li><i class="fa-solid fa-envelope"></i> <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
+                        <li><i class="fa-solid fa-phone"></i> <a href="tel:+33673669755">{{ user.telephone }}</a></li>
+                        <li><i class="fa-solid fa-location-dot"></i> {{ user.ville }}</li>
+                        <li><i class="fa-solid fa-car"></i> Titulaire du permis B</li>
+                        <li><i class="fa-brands fa-linkedin-in"></i> <a href="{{ user.linkedin }}" target="_blank" rel="noopener">Mon profil LinkedIn</a></li>
+                        <li><i class="fa-solid fa-file-arrow-down"></i> <a href="{{ url_for('static', filename=user.cv_pdf) }}" target="_blank" rel="noopener">Télécharger mon CV (PDF)</a></li>
+                    </ul>
+                </div>
+
+                <form method="POST" action="https://formspree.io/f/mrpbayra" class="form reveal" id="contact-form">
+                    <div class="form-row">
+                        <label>Votre nom
+                            <input type="text" name="nom" required placeholder="Prénom Nom">
+                        </label>
+                        <label>Votre entreprise
+                            <input type="text" name="entreprise" required placeholder="...">
+                        </label>
+                    </div>
+                    <label>Votre email
+                        <input type="email" name="email" required placeholder="...">
+                    </label>
+                    <label>Votre message
+                        <textarea name="message" rows="5" required placeholder="Écrivez votre message ici…"></textarea>
+                    </label>
+                    <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-paper-plane"></i> Envoyer</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-inner">
+            <span>© {{ user.nom }}</span>
+            <a href="#presentation">Retour en haut <i class="fa-solid fa-arrow-up"></i></a>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
