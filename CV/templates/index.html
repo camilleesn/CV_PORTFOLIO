@@ -1,12 +1,49 @@
 <!DOCTYPE html>
+{#
+=====================================================================
+  CV de Camille Esnault — contenu de la page (HTML + Jinja)
+=====================================================================
+
+  Ce fichier contient TOUT le texte du site. Pour changer une phrase,
+  une date ou un projet, c'est ici qu'il faut aller.
+
+  Il est rangé dans l'ordre de la page :
+    · Menu du haut
+    · 1. PRÉSENTATION  (badges, nom, « Ce que je recherche », photo et bulles,
+                        chiffres clés, logiciels, métiers, centres d'intérêt)
+    · 2. PARCOURS      (expériences, puis formations)
+    · 3. PROJETS
+    · CONTACT          (encart « besoins data », coordonnées, formulaire)
+    · Pied de page
+
+  Syntaxe à connaître :
+    <balise class="x">…</balise>  → un élément ; « class » sert au CSS
+                                    (styles.css) et au JavaScript (script.js)
+    {{ user.email }}              → remplacé par la valeur écrite dans app.py
+                                    (dictionnaire « profil »)
+    {{ url_for('static', filename='img/photo.jpeg') }}
+                                  → chemin vers un fichier du dossier static/
+    {% for … %} … {% endfor %}    → boucle Jinja : répète un bloc
+    accolade + dièse (comme les blocs gris de ce fichier)
+                                  → commentaire Jinja : visible ici, mais jamais
+                                    envoyé au navigateur (les visiteurs ne le
+                                    voient pas, même dans le code source)
+    class="reveal"                → l'élément apparaît en fondu au défilement
+    <i class="fa-solid fa-xxx">   → une icône Font Awesome
+                                    (catalogue : fontawesome.com/icons)
+=====================================================================
+#}
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    {# « noindex, nofollow » demande à Google de NE PAS référencer le site.
+       Supprime cette ligne si tu veux que ton site apparaisse dans les recherches Google. #}
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="CV de {{ user.nom }} — {{ user.titre }}">
     <title>{{ user.nom }} — {{ user.titre }}</title>
 
+    {# Polices (Sora pour les titres, Manrope pour le texte), icônes, puis notre feuille de style #}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,10 +52,12 @@
 </head>
 <body>
 
-    <!-- Barre de progression de lecture -->
+    {# Fine barre violette tout en haut, remplie par script.js pendant la lecture #}
     <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
 
-    <!-- ===================== NAVIGATION ===================== -->
+    {# ===================== MENU DU HAUT =====================
+       Chaque lien pointe vers l'id d'une section (href="#parcours" → <section id="parcours">).
+       Le bouton ≡ (nav-toggle) n'apparaît que sur téléphone. #}
     <header class="nav" id="nav">
         <div class="nav-inner">
             <a href="#presentation" class="nav-logo" aria-label="Retour en haut">
@@ -40,16 +79,20 @@
 
     <main>
 
-        <!-- ===================== 1. PRÉSENTATION ===================== -->
+        {# ===================== 1. PRÉSENTATION ===================== #}
         <section id="presentation" class="hero">
             <div class="container hero-grid">
 
+                {# ---------- Colonne de gauche : texte ---------- #}
                 <div class="hero-text">
+                    {# Badges du haut. Pense à supprimer la 2e ligne (« Indisponible… ») début décembre. #}
                     <div class="eyebrow-row reveal">
                         <p class="eyebrow"><span class="dot"></span> Disponible dès janvier 2027 · Normandie & Bretagne</p>
                         <p class="eyebrow eyebrow--away"><i class="fa-solid fa-plane-departure"></i> Indisponible en novembre 2026</p>
                     </div>
+                    {# Nom : « Esnault » est dans un <span> pour être coloré en violet #}
                     <h1 class="hero-name reveal">Camille <span>Esnault</span></h1>
+                    {# Métiers qui s'écrivent / s'effacent : modifie la liste dans data-words (séparés par |) #}
                     <p class="hero-role reveal" aria-label="Data Analyst, Data Scientist, Data Engineer">
                         <span class="role-prefix">Junior</span>
                         <span class="typed" id="typed" data-words="Data Analyst|Data Scientist|Data Engineer">Data Analyst</span><span class="caret" aria-hidden="true"></span>
@@ -59,6 +102,7 @@
                         au Crédit Agricole de Normandie. J'aime faire parler les données pour
                         <strong>améliorer la performance commerciale</strong> : préparation, modélisation et restitution.
                     </p>
+                    {# « Ce que je recherche » : 3 cartes. La 1re (seek--main) est violette. #}
                     <div class="seeking reveal" aria-label="Ce que je recherche">
                         <div class="seek seek--main">
                             <i class="fa-solid fa-briefcase"></i>
@@ -79,11 +123,13 @@
                             <span class="seek-sub">& projets d'entreprise</span>
                         </div>
                     </div>
+                    {# Boutons : Me contacter / CV en PDF / LinkedIn (les liens viennent de app.py) #}
                     <div class="hero-actions reveal">
                         <a href="#contact" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Me contacter</a>
                         <a href="{{ url_for('static', filename=user.cv_pdf) }}" class="btn btn-ghost" target="_blank" rel="noopener"><i class="fa-solid fa-file-arrow-down"></i> CV en PDF</a>
                         <a href="{{ user.linkedin }}" class="btn btn-icon" target="_blank" rel="noopener" aria-label="Mon profil LinkedIn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
                     </div>
+                    {# Ligne lieu · permis · email #}
                     <ul class="hero-meta reveal">
                         <li><i class="fa-solid fa-location-dot"></i> {{ user.ville }}</li>
                         <li><i class="fa-solid fa-car"></i> Permis B</li>
@@ -91,10 +137,18 @@
                     </ul>
                 </div>
 
+                {# ---------- Colonne de droite : photo + bulles qui tournent ----------
+                   Pour changer la photo : remplace le fichier static/img/photo_CamilleESNAULT.jpeg
+                   (en gardant le même nom), ou change le nom ci-dessous. #}
                 <div class="hero-photo reveal">
                     <div class="photo-frame">
                         <img src="{{ url_for('static', filename='img/photo_CamilleESNAULT.jpeg') }}" alt="Photo de Camille Esnault">
                     </div>
+                    {# Bulles de mots-clés. « --start » = angle de départ de chaque bulle sur le cercle
+                       (0deg = à droite, 90deg = en bas, -90deg = en haut, 180deg = à gauche).
+                       Ces angles ont été calculés pour que les bulles ne se croisent jamais :
+                       si tu ajoutes une bulle ou rallonges un mot, il faudra les réajuster.
+                       kw-chip--two = bulle sur deux lignes (<strong> puis <span>). #}
                     <ul class="keywords" aria-label="En bref">
                         <li class="kw kw-chip kw-chip--two" style="--start:-90deg"><strong>Bac +5</strong><span>Science des données</span></li>
                         <li class="kw kw-chip" style="--start:-19deg">Deep Learning</li>
@@ -105,7 +159,7 @@
                 </div>
             </div>
 
-            <!-- Chiffres clés -->
+            {# ---------- Bandeau des 4 chiffres clés ---------- #}
             <div class="container">
                 <div class="stats reveal">
                     <div class="stat"><strong>3</strong><span>années d'alternance</span></div>
@@ -115,7 +169,10 @@
                 </div>
             </div>
 
-            <!-- Logiciels -->
+            {# ---------- Logiciels ----------
+               Pour ajouter un logiciel : mets son logo dans static/img/ et ajoute
+               ('nom_du_fichier.png', 'Nom affiché') dans la liste « outils » ci-dessous.
+               La boucle {% for %} crée automatiquement une carte par logiciel. #}
             <div class="container block">
                 <div class="block-head reveal">
                     <h2 class="block-title">Logiciels & outils maîtrisés</h2>
@@ -136,7 +193,7 @@
                 </div>
             </div>
 
-            <!-- Métiers visés -->
+            {# ---------- Les 3 métiers visés ---------- #}
             <div class="container block">
                 <div class="block-head reveal">
                     <h2 class="block-title">Les métiers que je souhaite exercer</h2>
@@ -164,7 +221,7 @@
                 </p>
             </div>
 
-            <!-- Centres d'intérêt -->
+            {# ---------- Centres d'intérêt (4 cartes : icône, titre, phrase) ---------- #}
             <div class="container block" id="interets">
                 <div class="block-head reveal">
                     <h2 class="block-title">Mes centres d'intérêt</h2>
@@ -195,7 +252,14 @@
         </section>
 
 
-        <!-- ===================== 2. PARCOURS ===================== -->
+        {# ===================== 2. PARCOURS =====================
+           À gauche (parcours-side) : titre, boutons Expériences/Formations et encart violet.
+           L'encart violet est rempli automatiquement par script.js à partir des cartes :
+           tu n'as rien à y modifier.
+           À droite (parcours-main) : deux frises, chacune est une liste <ol class="timeline">
+           dont chaque étape est un <li class="tl-item">.
+           Pour ajouter une étape : copie un bloc <li class="tl-item"> … </li> complet
+           et change son contenu. #}
         <section id="parcours" class="section section--tinted">
             <div class="container parcours-layout">
                 <aside class="parcours-side">
@@ -223,14 +287,14 @@
 
                 <div class="parcours-main">
 
-                <!-- ---------- Expériences professionnelles ---------- -->
+                {# ---------- Frise 1 : expériences professionnelles ---------- #}
                 <div class="tl-group" id="experiences" data-group="pro">
                 <h3 class="tl-group-title reveal"><i class="fa-solid fa-briefcase"></i> Expériences professionnelles</h3>
                 <ol class="timeline">
-                    <li class="tl-fill" aria-hidden="true"></li>
+                    <li class="tl-fill" aria-hidden="true"></li>   {# trait violet qui se remplit (géré par script.js) #}
 
-                    <!-- Crédit Agricole -->
-                    <li class="tl-item reveal" data-type="pro">
+                    {# Crédit Agricole : 3 missions numérotées. Chaque ligne = <span class="k">THÈME</span><span class="v">détail</span> #}
+                    <li class="tl-item reveal">
                         <div class="tl-marker"><i class="fa-solid fa-briefcase"></i></div>
                         <article class="card">
                             <div class="card-top">
@@ -276,8 +340,8 @@
                         </article>
                     </li>
 
-                    <!-- Cotral Lab -->
-                    <li class="tl-item reveal" data-type="pro">
+                    {# Cotral Lab #}
+                    <li class="tl-item reveal">
                         <div class="tl-marker"><i class="fa-solid fa-briefcase"></i></div>
                         <article class="card">
                             <div class="card-top">
@@ -301,15 +365,15 @@
                 </ol>
                 </div>
 
-                <!-- ---------- Formations ---------- -->
+                {# ---------- Frise 2 : formations ---------- #}
                 <div class="tl-group" id="formations" data-group="edu">
                 <h3 class="tl-group-title reveal"><i class="fa-solid fa-graduation-cap"></i> Formations</h3>
                 <ol class="timeline">
-                    <li class="tl-fill" aria-hidden="true"></li>
+                    <li class="tl-fill" aria-hidden="true"></li>   {# trait violet qui se remplit (géré par script.js) #}
 
-                    <!-- Master -->
-                    <li class="tl-item reveal" data-type="edu">
-                        <div class="tl-marker tl-marker--edu"><i class="fa-solid fa-graduation-cap"></i></div>
+                    {# Master — les enseignements sont des étiquettes (<span>) dans « chips » #}
+                    <li class="tl-item reveal">
+                        <div class="tl-marker"><i class="fa-solid fa-graduation-cap"></i></div>
                         <article class="card">
                             <div class="card-top">
                                 <div class="card-title">
@@ -330,9 +394,9 @@
                         </article>
                     </li>
 
-                    <!-- BUT -->
-                    <li class="tl-item reveal" data-type="edu">
-                        <div class="tl-marker tl-marker--edu"><i class="fa-solid fa-graduation-cap"></i></div>
+                    {# BUT #}
+                    <li class="tl-item reveal">
+                        <div class="tl-marker"><i class="fa-solid fa-graduation-cap"></i></div>
                         <article class="card">
                             <div class="card-top">
                                 <div class="card-title">
@@ -351,10 +415,10 @@
                         </article>
                     </li>
 
-                    <!-- Bac -->
-                    <li class="tl-item reveal" data-type="edu">
-                        <div class="tl-marker tl-marker--edu"><i class="fa-solid fa-school"></i></div>
-                        <article class="card card--compact">
+                    {# Baccalauréat #}
+                    <li class="tl-item reveal">
+                        <div class="tl-marker"><i class="fa-solid fa-school"></i></div>
+                        <article class="card">
                             <div class="card-top">
                                 <div class="card-title">
                                     <h3>Baccalauréat général <small>· mention Assez Bien</small></h3>
@@ -372,7 +436,11 @@
         </section>
 
 
-        <!-- ===================== 3. PROJETS ===================== -->
+        {# ===================== 3. PROJETS =====================
+           Chaque projet est un <article class="project">. Pour en ajouter un, copie un
+           <article> complet. Le compteur (« 01 / 04 ») et les grands numéros en fond
+           se mettent à jour tout seuls. La dernière carte « D'autres projets arrivent… »
+           peut être supprimée quand tu auras assez de projets. #}
         <section id="projets" class="hs">
             <div class="hs-sticky">
             <div class="container hs-head">
@@ -390,7 +458,7 @@
                 </div>
             </div>
             <div class="hs-viewport" id="hs-viewport">
-                <div class="projects hs-track" id="hs-track">
+                <div class="hs-track" id="hs-track">
                     <article class="project reveal">
                         <div class="project-head">
                             <div class="project-icon"><i class="fa-solid fa-user-doctor"></i></div>
@@ -447,13 +515,14 @@
         </section>
 
 
-        <!-- ===================== CONTACT ===================== -->
+        {# ===================== 4. CONTACT ===================== #}
         <section id="contact" class="section contact">
             <div class="container contact-grid">
                 <div class="contact-intro reveal">
                     <span class="section-num section-num--light">04</span>
                     <h2>Travaillons ensemble</h2>
                     <p>Je recherche un <strong>CDI en Normandie ou en Bretagne</strong>, et je reste ouverte à une <strong>mission freelance</strong> ou à un projet data intéressant au sein de votre entreprise. Je suis <strong>disponible dès janvier 2027</strong>. Écrivez-moi, je vous répondrai rapidement.</p>
+                    {# Encart « Votre entreprise a des besoins data ? » — tout l'encart est un lien vers le formulaire #}
                     <a class="needs" href="#contact-form">
                         <span class="needs-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
                         <span class="needs-text">
@@ -462,6 +531,8 @@
                         </span>
                         <span class="needs-cta">Contactez-moi <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
+                    {# Coordonnées (les valeurs viennent de app.py).
+                       Attention : le numéro du lien tel: est écrit en dur, change-le aussi ici si besoin. #}
                     <ul class="contact-list">
                         <li><i class="fa-solid fa-envelope"></i> <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
                         <li><i class="fa-solid fa-phone"></i> <a href="tel:+33673669755">{{ user.telephone }}</a></li>
@@ -472,6 +543,9 @@
                     </ul>
                 </div>
 
+                {# Formulaire : les messages sont envoyés par le service Formspree (formspree.io),
+                   qui te les transfère par email. « action » contient l'adresse de ton formulaire Formspree.
+                   L'attribut « name » de chaque champ est le nom qui apparaîtra dans l'email reçu. #}
                 <form method="POST" action="https://formspree.io/f/mrpbayra" class="form reveal" id="contact-form">
                     <div class="form-row">
                         <label>Votre nom
@@ -493,6 +567,7 @@
         </section>
     </main>
 
+    {# ===================== PIED DE PAGE ===================== #}
     <footer class="footer">
         <div class="container footer-inner">
             <span>© {{ user.nom }}</span>
@@ -500,6 +575,7 @@
         </div>
     </footer>
 
+    {# Le JavaScript est chargé en dernier, quand tous les éléments de la page existent #}
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

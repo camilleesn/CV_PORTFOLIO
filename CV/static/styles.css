@@ -1,29 +1,82 @@
-/* =========================================================
-   CV Camille Esnault — page unique
-   ========================================================= */
+/* =====================================================================
+   CV de Camille Esnault — feuille de style (CSS)
+   =====================================================================
 
+   COMMENT LIRE CE FICHIER
+   -----------------------
+   Le CSS décrit l'apparence de la page : couleurs, tailles, espacements,
+   positions et animations. Il est rangé dans le même ordre que la page :
+
+     0. Variables (couleurs, polices…)  ← pour changer une couleur partout
+     1. Bases (réglages généraux)
+     2. Menu du haut + barre de progression
+     3. Boutons
+     4. Présentation (haut de page) : badges, nom, métiers animés,
+        « Ce que je recherche », photo et bulles qui tournent
+     5. Chiffres clés, logiciels, métiers, centres d'intérêt
+     6. Éléments communs aux sections (titres, dates, étiquettes)
+     7. Parcours (frise des expériences et formations)
+     8. Projets (cartes qui défilent sur le côté)
+     9. Contact (encart « besoins data », coordonnées, formulaire)
+    10. Pied de page
+    11. Animations d'apparition + accessibilité
+
+   Rappels de syntaxe :
+     .nom-de-classe { propriété: valeur; }   → s'applique aux éléments
+                                               qui ont class="nom-de-classe"
+     @media (max-width: 880px) { … }        → règles appliquées seulement
+                                               si l'écran fait 880 px de large
+                                               ou moins (tablettes, téléphones)
+     var(--violet)                          → utilise une variable définie
+                                               dans la partie 0
+
+   Les 3 tailles d'écran utilisées partout :
+     ≤ 1060 px : petit ordinateur / tablette en paysage
+     ≤  880 px : tablette / téléphone → la page passe sur une seule colonne
+     ≤  560 px : téléphone
+   ===================================================================== */
+
+
+/* =====================================================================
+   0. VARIABLES — modifie une valeur ici, elle change sur tout le site
+   ===================================================================== */
 :root {
-    --violet: #5B21B6;          /* couleur principale */
-    --violet-dark: #3B0F7A;
-    --violet-soft: #EDE7F8;
-    --violet-line: #D9CCF1;
-    --ink: #1C1530;             /* texte foncé */
-    --text: #4A4560;            /* texte courant */
-    --muted: #7C7790;
-    --bg: #FBFAF7;              /* fond chaud, s'accorde avec la photo */
-    --bg-tint: #F4F1EC;
-    --card: #FFFFFF;
-    --border: #ECE8E1;
-    --radius: 18px;
+    /* Couleurs */
+    --violet: #5B21B6;          /* violet principal (boutons, titres, accents) */
+    --violet-dark: #3B0F7A;     /* violet foncé (survol des boutons) */
+    --violet-soft: #EDE7F8;     /* violet très clair (fonds d'icônes, dates) */
+    --violet-line: #D9CCF1;     /* violet pâle (contours, traits de la frise) */
+    --ink: #1C1530;             /* presque noir : titres, partie Contact */
+    --text: #4A4560;            /* couleur du texte courant */
+    --muted: #7C7790;           /* gris-violet pour les textes secondaires */
+    --bg: #FBFAF7;              /* fond de page, blanc chaud (assorti à la photo) */
+    --bg-tint: #F4F1EC;         /* fond légèrement plus foncé (section Parcours) */
+    --card: #FFFFFF;            /* fond des cartes */
+    --border: #ECE8E1;          /* contour des cartes */
+
+    /* Formes et ombres */
+    --radius: 18px;             /* arrondi des cartes */
     --shadow: 0 1px 2px rgba(28, 21, 48, .04), 0 8px 30px rgba(28, 21, 48, .06);
     --shadow-hover: 0 2px 4px rgba(28, 21, 48, .05), 0 18px 40px rgba(91, 33, 182, .14);
-    --font-title: 'Sora', system-ui, sans-serif;
-    --font-body: 'Manrope', system-ui, sans-serif;
+
+    /* Polices (chargées depuis Google Fonts dans index.html) */
+    --font-title: 'Sora', system-ui, sans-serif;     /* titres */
+    --font-body: 'Manrope', system-ui, sans-serif;   /* texte */
+
+    /* Hauteur du menu du haut */
     --nav-h: 72px;
 }
 
+
+/* =====================================================================
+   1. BASES — réglages appliqués à toute la page
+   ===================================================================== */
+
+/* Les tailles incluent les bordures et marges intérieures (plus simple à calculer) */
 *, *::before, *::after { box-sizing: border-box; }
 
+/* Défilement doux quand on clique sur un lien du menu ; on s'arrête un peu
+   sous le menu fixe pour ne pas cacher le titre de la section */
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 8px); }
 
 body {
@@ -33,21 +86,36 @@ body {
     line-height: 1.65;
     color: var(--text);
     background: var(--bg);
-    -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;   /* texte plus net sur Mac */
 }
 
-img { max-width: 100%; display: block; }
+img { max-width: 100%; display: block; }   /* les images ne débordent jamais */
 a { color: inherit; }
 h1, h2, h3, h4 { font-family: var(--font-title); color: var(--ink); margin: 0; line-height: 1.2; }
 strong { color: var(--ink); font-weight: 700; }
 
+/* Conteneur centré : limite la largeur du contenu à 1160 px sur grand écran */
 .container { width: 100%; max-width: 1160px; margin: 0 auto; padding: 0 24px; }
 
-/* ---------- Barre de progression ---------- */
+/* Empêche les animations d'entrée (éléments qui glissent depuis la droite)
+   de créer un défilement horizontal de la page */
+main { overflow-x: clip; }
+
+@media (max-width: 560px) {
+    .container { padding: 0 16px; }
+}
+
+
+/* =====================================================================
+   2. MENU DU HAUT + BARRE DE PROGRESSION
+   ===================================================================== */
+
+/* Fine barre violette tout en haut qui se remplit pendant la lecture
+   (sa largeur est mise à jour par script.js) */
 .progress { position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 1001; }
 .progress span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--violet), #A78BFA); }
 
-/* ---------- Navigation ---------- */
+/* Le menu reste fixé en haut de l'écran, avec un fond légèrement flou */
 .nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
     height: var(--nav-h);
@@ -57,129 +125,272 @@ strong { color: var(--ink); font-weight: 700; }
     border-bottom: 1px solid transparent;
     transition: border-color .3s, box-shadow .3s;
 }
+/* Dès qu'on a un peu défilé, une ombre apparaît sous le menu (classe ajoutée par script.js) */
 .nav.is-scrolled { border-bottom-color: var(--border); box-shadow: 0 6px 24px rgba(28, 21, 48, .05); }
 .nav-inner { max-width: 1160px; height: 100%; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
 
+/* Carré violet « CE » à gauche */
 .nav-logo { text-decoration: none; }
 .nav-logo span {
     display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px;
     background: var(--violet); color: #fff; font-family: var(--font-title); font-weight: 700; letter-spacing: .5px;
 }
 
+/* Liens du menu */
 .nav-links { display: flex; align-items: center; gap: 4px; }
 .nav-links a {
     text-decoration: none; font-weight: 600; font-size: .95rem; color: var(--text);
     padding: 8px 14px; border-radius: 999px; transition: color .2s, background .2s;
 }
 .nav-links a:hover { color: var(--violet); }
+/* Lien de la section actuellement à l'écran (classe ajoutée par script.js) */
 .nav-links a.is-active { color: var(--violet); background: var(--violet-soft); }
+/* Bouton « Me contacter » */
 .nav-links a.nav-cta { background: var(--ink); color: #fff; margin-left: 8px; }
 .nav-links a.nav-cta:hover, .nav-links a.nav-cta.is-active { background: var(--violet); color: #fff; }
 
+/* Bouton « hamburger » (≡), caché sur ordinateur */
 .nav-toggle {
     display: none; width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 12px;
     background: var(--card); color: var(--ink); font-size: 1.1rem; cursor: pointer;
 }
 
-/* ---------- Boutons ---------- */
+/* Tablette / téléphone : les liens deviennent un menu déroulant */
+@media (max-width: 880px) {
+    .nav-toggle { display: grid; place-items: center; }
+    .nav-links {
+        position: absolute; top: var(--nav-h); left: 12px; right: 12px; flex-direction: column; align-items: stretch;
+        padding: 10px; background: var(--card); border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow);
+        opacity: 0; pointer-events: none; transform: translateY(-8px); transition: opacity .2s, transform .2s;
+    }
+    /* Menu ouvert (classe ajoutée par script.js au clic sur ≡) */
+    .nav-links.is-open { opacity: 1; pointer-events: auto; transform: none; }
+    .nav-links a { padding: 12px 16px; }
+    .nav-links a.nav-cta { margin: 6px 0 0; text-align: center; }
+}
+@media (max-width: 560px) {
+    .nav-inner { padding: 0 16px; }
+}
+
+
+/* =====================================================================
+   3. BOUTONS
+   ===================================================================== */
 .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 10px;
     padding: 14px 24px; border-radius: 999px; font-weight: 700; font-size: .98rem;
     text-decoration: none; border: 1px solid transparent; cursor: pointer; font-family: var(--font-body);
     transition: transform .2s, background .2s, box-shadow .2s, color .2s, border-color .2s;
 }
+/* Bouton plein violet (« Me contacter », « Envoyer ») */
 .btn-primary { background: var(--violet); color: #fff; box-shadow: 0 8px 24px rgba(91, 33, 182, .28); }
 .btn-primary:hover { background: var(--violet-dark); transform: translateY(-2px); }
+/* Bouton avec seulement un contour (« CV en PDF ») */
 .btn-ghost { border-color: var(--violet-line); color: var(--ink); background: transparent; }
 .btn-ghost:hover { border-color: var(--violet); color: var(--violet); transform: translateY(-2px); }
+/* Bouton rond avec seulement une icône (LinkedIn) : devient bleu LinkedIn au survol */
+.btn-icon { width: 50px; height: 50px; padding: 0; border-color: var(--violet-line); color: var(--ink); font-size: 1.1rem; }
+.btn-icon:hover { background: #0A66C2; border-color: #0A66C2; color: #fff; transform: translateY(-2px); }
+/* Bouton qui prend toute la largeur (« Envoyer » du formulaire) */
 .btn-block { width: 100%; }
 
-/* ---------- 1. Présentation ---------- */
+
+/* =====================================================================
+   4. PRÉSENTATION (haut de page)
+   ===================================================================== */
+
+/* --- 4.1 Mise en page générale : texte à gauche, photo à droite --- */
 .hero { padding: calc(var(--nav-h) + 56px) 0 96px; position: relative; overflow: hidden; }
+/* Halo violet décoratif en haut à droite */
 .hero::before {
     content: ""; position: absolute; top: -200px; right: -160px; width: 620px; height: 620px; border-radius: 50%;
     background: radial-gradient(closest-side, rgba(167, 139, 250, .28), transparent);
     pointer-events: none;
 }
+/* Deux colonnes : 1,3 part pour le texte, 0,7 part pour la photo */
 .hero-grid { display: grid; grid-template-columns: 1.3fr .7fr; gap: 64px; align-items: center; position: relative; }
+.hero-text { min-width: 0; }   /* autorise le texte à rétrécir au lieu d'élargir la page */
 
+/* --- 4.2 Badges du haut : « Disponible dès… » et « Indisponible en novembre » --- */
+.eyebrow-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
 .eyebrow {
-    display: inline-flex; align-items: center; gap: 10px; margin: 0 0 22px;
+    display: inline-flex; align-items: center; gap: 10px; margin: 0;
     padding: 7px 14px; border-radius: 999px; background: var(--card); border: 1px solid var(--border);
     font-size: .88rem; font-weight: 600; color: var(--text);
 }
+/* Point vert « disponible » */
 .dot { width: 8px; height: 8px; border-radius: 50%; background: #22C55E; box-shadow: 0 0 0 4px rgba(34, 197, 94, .18); }
+/* Variante jaune pour l'indisponibilité */
+.eyebrow--away { background: #FEF6E4; border-color: #F5D9A0; color: #8A5A00; }
+.eyebrow--away i { color: #C2850C; }
 
-.hero-name { font-size: clamp(3rem, 7vw, 5.4rem); font-weight: 800; letter-spacing: -.035em; line-height: .98; }
-.hero-name span { color: var(--violet); }
-.hero-role { font-family: var(--font-title); font-weight: 600; font-size: clamp(1.15rem, 2vw, 1.45rem); color: var(--ink); margin: 18px 0 18px; }
+/* --- 4.3 Nom (« Camille Esnault ») sur une seule ligne --- */
+/* clamp(min, idéal, max) : la taille s'adapte à la largeur de l'écran
+   sans jamais passer sous le minimum ni au-dessus du maximum */
+.hero-name { font-size: clamp(2.2rem, 5.2vw, 4.4rem); font-weight: 800; letter-spacing: -.035em; line-height: .98; white-space: nowrap; }
+.hero-name span { color: var(--violet); }   /* « Esnault » en violet */
+
+/* --- 4.4 Ligne « JUNIOR Data Analyst » (le métier s'écrit/s'efface via script.js) --- */
+.hero-role {
+    display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; min-height: 1.5em;
+    font-family: var(--font-title); font-weight: 600; font-size: clamp(1.15rem, 2vw, 1.45rem); color: var(--ink);
+    margin: 18px 0 18px;
+}
+.role-prefix {   /* badge noir « JUNIOR » */
+    font-family: var(--font-body); font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+    padding: 4px 10px; border-radius: 999px; background: var(--ink); color: #fff; align-self: center;
+}
+.typed { color: var(--violet); }   /* le métier qui change */
+/* Curseur clignotant après le métier */
+.caret { display: inline-block; width: 3px; height: 1.1em; background: var(--violet); margin-left: -6px; transform: translateY(3px); animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* --- 4.5 Texte de présentation --- */
 .hero-bio { font-size: 1.1rem; max-width: 560px; margin: 0 0 30px; }
+
+/* --- 4.6 « Ce que je recherche » : 3 cartes côte à côte --- */
 .seeking { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 600px; margin: 0 0 30px; }
 .seek {
     display: flex; flex-direction: column; gap: 2px; padding: 16px 16px 14px; border-radius: 16px;
     background: var(--card); border: 1px solid var(--border); transition: transform .25s, box-shadow .25s;
 }
 .seek:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
-.seek i {
+.seek i {   /* petite icône carrée */
     width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; margin-bottom: 10px;
     background: var(--violet-soft); color: var(--violet); font-size: .95rem;
 }
 .seek-label { font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
 .seek strong { font-family: var(--font-title); font-size: 1.12rem; line-height: 1.25; }
 .seek-sub { font-size: .84rem; color: var(--muted); line-height: 1.35; }
+/* La 1re carte (« Un CDI ») est pleine violette pour ressortir */
 .seek--main { background: var(--violet); border-color: var(--violet); }
 .seek--main i { background: rgba(255, 255, 255, .16); color: #fff; }
 .seek--main strong { color: #fff; }
 .seek--main .seek-label, .seek--main .seek-sub { color: #DDD3F5; }
-@media (max-width: 560px) {
-    .seeking { grid-template-columns: 1fr; }
-    .seek { display: grid; grid-template-columns: 34px 1fr; column-gap: 14px; align-items: center; padding: 12px 14px; }
-    .seek i { grid-row: span 3; margin: 0; }
-}
-.contact strong { color: #fff; }
 
+/* --- 4.7 Boutons (Me contacter / CV en PDF / LinkedIn) --- */
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 30px; }
-.hero-meta { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: .93rem; color: var(--muted); }
+
+/* --- 4.8 Ligne lieu · permis · email, toujours sur une seule ligne --- */
+.hero-meta {
+    list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: nowrap; gap: 8px 18px;
+    white-space: nowrap; font-size: .9rem; color: var(--muted);
+}
+.hero-meta li { display: flex; align-items: center; }
 .hero-meta i { color: var(--violet); margin-right: 6px; }
 .hero-meta a { text-decoration: none; }
 .hero-meta a:hover { color: var(--violet); }
 
-.hero-photo { position: relative; justify-self: center; width: 100%; max-width: 300px; }
+/* --- 4.9 Photo ronde --- */
+.hero-photo {
+    position: relative; width: 100%; max-width: 300px;
+    justify-self: start; margin-left: 20px;
+    --r: 132px;   /* rayon du cercle sur lequel tournent les bulles (voir 4.10) */
+}
 .photo-frame {
     position: relative; border-radius: 50%; overflow: hidden; aspect-ratio: 1 / 1;
     background: var(--violet-soft); border: 6px solid #fff;
     box-shadow: 0 24px 50px rgba(59, 15, 122, .18);
 }
 .photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; }
+/* Cercle en pointillés autour de la photo */
 .hero-photo::after {
     content: ""; position: absolute; inset: -16px; z-index: -1;
     border-radius: 50%; border: 2px dashed var(--violet-line);
 }
 
-.float-card {
-    position: absolute; display: flex; align-items: center; gap: 12px;
-    padding: 10px 14px; border-radius: 16px; background: rgba(255, 255, 255, .96);
-    box-shadow: var(--shadow); border: 1px solid var(--border); white-space: nowrap;
+/* --- 4.10 Bulles de mots-clés qui tournent autour de la photo ---
+   Principe : chaque bulle est placée au centre de la photo, tournée d'un angle,
+   poussée vers l'extérieur de la distance --r, puis « détournée » pour que
+   le texte reste à l'endroit. L'animation fait varier l'angle --orbit de 0 à
+   360° en 40 secondes. Chaque bulle a son angle de départ (--start) écrit
+   directement dans index.html. Les angles et rayons ont été calculés pour
+   que les bulles ne se croisent jamais : si tu ajoutes ou allonges un mot,
+   il faudra peut-être les ajuster. */
+@property --orbit { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+@keyframes orbit { to { --orbit: 360deg; } }
+
+.keywords { list-style: none; margin: 0; padding: 0; }
+.kw.kw-chip {
+    position: absolute; z-index: 2; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(calc(var(--start) + var(--orbit))) translateX(var(--r)) rotate(calc(-1 * (var(--start) + var(--orbit))));
+    animation: orbit 40s linear infinite;
+    /* Apparence : pastille transparente avec un fin contour blanc */
+    display: inline-flex; align-items: center; gap: 0;
+    padding: 6px 13px; border-radius: 999px; white-space: nowrap;
+    font-size: .8rem; font-weight: 600; color: #fff; line-height: 1.2;
+    background: rgba(28, 21, 48, .1);
+    border: 1px solid rgba(255, 255, 255, .55);
+    box-shadow: 0 4px 14px rgba(28, 21, 48, .12);
+    backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, .6), 0 0 8px rgba(28, 21, 48, .35);   /* ombre pour rester lisible */
 }
-.float-card i { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 11px; background: var(--violet-soft); color: var(--violet); }
-.float-card strong { display: block; font-family: var(--font-title); font-size: .95rem; line-height: 1.2; }
-.float-card span { font-size: .8rem; color: var(--muted); }
-.float-card--top { top: 4%; left: -70px; }
-.float-card--bottom { bottom: 2%; right: -60px; }
+.kw.kw-chip strong, .kw.kw-chip span { text-shadow: 0 1px 3px rgba(0, 0, 0, .55); }
+.kw.kw-chip strong { font-family: var(--font-body); font-size: inherit; font-weight: 800; line-height: 1.2; color: #fff; }
+/* Bulles sur deux lignes (« Bac +5 / Science des données », « 3 ans… / domaine bancaire ») */
+.kw.kw-chip--two { flex-direction: column; border-radius: 14px; padding: 6px 12px; gap: 1px; text-align: center; }
+.kw.kw-chip--two span { font-size: .9em; font-weight: 600; color: #fff; }
+/* La rotation s'arrête quand on passe la souris sur la photo */
+.hero-photo:hover .kw { animation-play-state: paused; }
 
-/* Métiers qui s'écrivent / s'effacent */
-.hero-role { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; min-height: 1.5em; }
-.role-prefix {
-    font-family: var(--font-body); font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
-    padding: 4px 10px; border-radius: 999px; background: var(--ink); color: #fff; align-self: center;
+/* --- 4.11 Adaptation aux écrans plus petits --- */
+@media (max-width: 1320px) {
+    .hero-photo { --r: 130px; }
 }
-.typed { color: var(--violet); }
-.caret { display: inline-block; width: 3px; height: 1.1em; background: var(--violet); margin-left: -6px; transform: translateY(3px); animation: blink 1s steps(1) infinite; }
-@keyframes blink { 50% { opacity: 0; } }
+/* Petit ordinateur : bulles un peu plus petites et plus proches de la photo */
+@media (min-width: 881px) and (max-width: 1180px) {
+    .hero-photo { --r: 120px; }
+    .kw.kw-chip { font-size: .74rem; padding: 5px 11px; }
+    .kw.kw-chip--two { padding: 6px 12px; }
+}
+@media (min-width: 881px) and (max-width: 1060px) {
+    .hero-photo { max-width: 260px; margin-left: 0; }
+    .kw.kw-chip { max-width: 100%; }
+}
+@media (min-width: 881px) and (max-width: 960px) {
+    .hero-photo { --r: 105px; }
+    .kw.kw-chip, .kw.kw-chip--two { font-size: .68rem; padding: 4px 9px; }
+}
+@media (max-width: 1060px) {
+    .hero-meta { font-size: .8rem; gap: 14px; }
+}
+/* Tablette / téléphone : une seule colonne, la photo passe au-dessus du texte */
+@media (max-width: 880px) {
+    .hero { padding-top: calc(var(--nav-h) + 32px); }
+    .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+    .hero-photo { order: -1; max-width: 280px; justify-self: center; margin: 0 auto 8px; --r: 132px; }
+}
+/* Téléphone */
+@media (max-width: 560px) {
+    .eyebrow-row .eyebrow { font-size: .8rem; padding: 6px 12px; }
+    .hero-name { font-size: clamp(1.9rem, 10vw, 2.6rem); }
+    /* « Ce que je recherche » reste sur 3 colonnes, en plus compact */
+    .seeking { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .seek { align-items: flex-start; padding: 12px 10px; column-gap: 0; }
+    .seek i { width: 28px; height: 28px; font-size: .8rem; margin: 0 0 8px; }
+    .seek-label { font-size: .6rem; letter-spacing: .04em; }
+    .seek strong { font-size: .92rem; }
+    .seek-sub { font-size: .72rem; }
+    .hero-actions { gap: 10px; }
+    .hero-actions .btn:not(.btn-icon) { padding: 13px 18px; font-size: .94rem; }
+    .hero-meta { gap: 10px; font-size: .68rem; }
+    .hero-meta i { margin-right: 3px; }
+    .hero-photo { max-width: 230px; --r: 110px; }
+    .kw.kw-chip { font-size: .68rem; padding: 4px 9px; }
+    .kw.kw-chip--two { padding: 6px 12px; }
+}
+/* Très petit téléphone : la ligne lieu/permis/email peut passer sur 2 lignes */
+@media (max-width: 360px) {
+    .hero-meta { flex-wrap: wrap; }
+}
 
-.btn-icon { width: 50px; height: 50px; padding: 0; border-color: var(--violet-line); color: var(--ink); font-size: 1.1rem; }
-.btn-icon:hover { background: #0A66C2; border-color: #0A66C2; color: #fff; transform: translateY(-2px); }
 
+/* =====================================================================
+   5. CHIFFRES CLÉS, LOGICIELS, MÉTIERS, CENTRES D'INTÉRÊT
+   (toujours dans la partie Présentation)
+   ===================================================================== */
+
+/* --- 5.1 Bandeau des 4 chiffres clés --- */
 .stats {
     margin-top: 80px; display: grid; grid-template-columns: repeat(4, 1fr);
     background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
@@ -189,11 +400,13 @@ strong { color: var(--ink); font-weight: 700; }
 .stat strong { display: block; font-family: var(--font-title); font-size: 2.2rem; color: var(--violet); line-height: 1.1; }
 .stat span { font-size: .92rem; color: var(--muted); }
 
+/* --- 5.2 Titres de blocs (« Logiciels & outils maîtrisés », etc.) avec un trait à droite --- */
 .block { margin-top: 80px; }
 .block-head { margin-bottom: 24px; }
 .block-title { font-size: 1.4rem; font-weight: 700; display: flex; align-items: center; gap: 14px; }
 .block-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
 
+/* --- 5.3 Grille des logiciels (autant de colonnes de 128 px minimum que possible) --- */
 .tools { display: grid; grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); gap: 14px; }
 .tool {
     display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 18px 12px 14px;
@@ -205,7 +418,8 @@ strong { color: var(--ink); font-weight: 700; }
 .tool-logo { height: 44px; width: 100%; display: grid; place-items: center; }
 .tool-logo img { max-height: 44px; max-width: 80px; object-fit: contain; }
 
-.jobs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+/* --- 5.4 Les 3 métiers visés, côte à côte --- */
+.jobs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
 .job {
     background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px;
     transition: transform .25s, box-shadow .25s;
@@ -218,109 +432,14 @@ strong { color: var(--ink); font-weight: 700; }
 .job h3 { font-size: 1.2rem; margin-bottom: 10px; }
 .job p { margin: 0; font-size: .97rem; }
 
+/* Encadré violet clair « Profil junior… » */
 .note {
     margin: 22px 0 0; padding: 18px 22px; border-radius: 14px; background: var(--violet-soft);
     color: var(--violet-dark); font-weight: 600; display: flex; gap: 12px; align-items: flex-start;
 }
 .note i { margin-top: 4px; }
 
-/* ---------- Sections génériques ---------- */
-.section { padding: 110px 0; }
-.section--tinted { background: var(--bg-tint); }
-.section-head { max-width: 680px; margin-bottom: 48px; }
-.section-num { font-family: var(--font-title); font-weight: 700; font-size: .9rem; color: var(--violet); letter-spacing: .12em; }
-.section-head h2 { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -.02em; margin: 6px 0 12px; }
-.section-head p { margin: 0; font-size: 1.08rem; color: var(--muted); }
-
-.date {
-    display: inline-block; white-space: nowrap; padding: 5px 12px; border-radius: 999px;
-    background: var(--violet-soft); color: var(--violet); font-weight: 700; font-size: .82rem;
-}
-.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-.chips span {
-    padding: 5px 12px; border-radius: 999px; font-size: .82rem; font-weight: 600;
-    border: 1px solid var(--violet-line); color: var(--violet-dark); background: #fff;
-}
-.chips--soft span { background: var(--bg); border-color: var(--border); color: var(--text); font-weight: 500; }
-.list { margin: 14px 0 0; padding-left: 18px; }
-.list li { margin-bottom: 6px; }
-.list li::marker { color: var(--violet); }
-
-/* ---------- 2. Parcours (frise) ---------- */
-.tabs {
-    display: inline-flex; gap: 4px; padding: 5px; margin-bottom: 40px;
-    background: var(--card); border: 1px solid var(--border); border-radius: 999px;
-}
-.tab {
-    border: none; background: none; cursor: pointer; padding: 10px 18px; border-radius: 999px;
-    font-family: var(--font-body); font-weight: 700; font-size: .92rem; color: var(--text);
-    display: inline-flex; align-items: center; gap: 8px; transition: background .2s, color .2s;
-}
-.tab:hover { color: var(--violet); }
-.tab.is-active { background: var(--ink); color: #fff; }
-
-.timeline { list-style: none; margin: 0; padding: 0; position: relative; }
-.timeline::before {
-    content: ""; position: absolute; left: 23px; top: 8px; bottom: 8px; width: 2px;
-    background: linear-gradient(var(--violet-line), var(--violet-line) 85%, transparent);
-}
-.tl-item { position: relative; padding-left: 76px; margin-bottom: 24px; }
-.tl-item[hidden] { display: none; }
-.tl-marker {
-    position: absolute; left: 0; top: 22px; width: 48px; height: 48px; border-radius: 14px;
-    display: grid; place-items: center; background: var(--violet); color: #fff; font-size: 1.05rem;
-    box-shadow: 0 0 0 6px var(--bg-tint);
-}
-.tl-marker--edu { background: var(--card); color: var(--violet); border: 2px solid var(--violet-line); }
-
-.card {
-    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 28px 30px; box-shadow: var(--shadow); transition: box-shadow .25s, transform .25s;
-}
-.card:hover { box-shadow: var(--shadow-hover); }
-.card-top { display: flex; align-items: center; gap: 16px; }
-.card-title { flex: 1; min-width: 0; }
-.card-title h3 { font-size: 1.25rem; }
-.card-title h3 small { font-family: var(--font-body); font-weight: 600; font-size: .85rem; color: var(--muted); }
-.org { margin: 4px 0 0; color: var(--muted); font-size: .95rem; }
-.org-logo { width: 52px; height: 52px; object-fit: contain; border-radius: 12px; border: 1px solid var(--border); padding: 5px; background: #fff; flex-shrink: 0; }
-
-.missions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 22px; }
-.mission { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; }
-.mission h4 { font-size: 1rem; margin-bottom: 10px; line-height: 1.35; }
-.mission .tag {
-    display: inline-block; margin-bottom: 6px; padding: 2px 9px; border-radius: 6px;
-    background: var(--violet); color: #fff; font-family: var(--font-body); font-size: .72rem; font-weight: 700; letter-spacing: .02em;
-}
-.mission ul { margin: 0; padding-left: 16px; font-size: .92rem; }
-.mission li { margin-bottom: 6px; }
-.mission li::marker { color: var(--violet); }
-
-/* ---------- 3. Projets ---------- */
-.projects { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
-.project {
-    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px;
-    box-shadow: var(--shadow); display: flex; flex-direction: column; transition: transform .25s, box-shadow .25s;
-}
-.project:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
-.project-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-.project-icon {
-    width: 50px; height: 50px; border-radius: 14px; display: grid; place-items: center;
-    background: var(--violet-soft); color: var(--violet); font-size: 1.25rem;
-}
-.project h3 { font-size: 1.2rem; }
-.team { margin: 6px 0 0; color: var(--muted); font-size: .9rem; }
-.team i { color: var(--violet); margin-right: 6px; }
-.project .chips { margin-top: auto; padding-top: 18px; }
-.project--soon {
-    align-items: center; justify-content: center; text-align: center; background: transparent;
-    border: 2px dashed var(--violet-line); box-shadow: none; min-height: 220px;
-}
-.project--soon:hover { transform: none; box-shadow: none; border-color: var(--violet); }
-.project--soon i { font-size: 1.4rem; color: var(--violet); width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--violet-soft); margin-bottom: 14px; }
-.project--soon p { margin: 6px 0 0; color: var(--muted); }
-
-/* ---------- 4. Centres d'intérêt ---------- */
+/* --- 5.5 Centres d'intérêt (4 cartes) --- */
 .hobbies { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .hobby {
     background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
@@ -331,281 +450,130 @@ strong { color: var(--ink); font-weight: 700; }
     width: 72px; height: 72px; margin: 0 auto 16px; border-radius: 50%; display: grid; place-items: center;
     background: var(--violet-soft); color: var(--violet); font-size: 1.7rem; transition: background .25s, color .25s;
 }
-.hobby:hover .hobby-icon { background: var(--violet); color: #fff; }
+.hobby:hover .hobby-icon { background: var(--violet); color: #fff; }   /* l'icône devient violette au survol */
 .hobby h3 { font-size: 1.08rem; }
 .hobby p { margin: 8px 0 0; font-size: .92rem; color: var(--muted); line-height: 1.5; }
 
-/* ---------- Contact ---------- */
-.contact { background: var(--ink); color: #CFC9DE; }
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
-.section-num--light { color: #C4B5FD; }
-.contact h2 { color: #fff; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -.02em; margin: 6px 0 14px; }
-.contact-intro > p { font-size: 1.08rem; margin: 0 0 30px; }
-.contact-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
-.contact-list li { display: flex; align-items: center; gap: 14px; }
-.contact-list i { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(255, 255, 255, .08); color: #C4B5FD; }
-.contact-list a { color: #fff; text-decoration: none; }
-.contact-list a:hover { color: #C4B5FD; }
-
-.form { background: #fff; border-radius: 22px; padding: 30px; display: grid; gap: 16px; box-shadow: 0 30px 60px rgba(0, 0, 0, .25); }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.form label { display: grid; gap: 7px; font-weight: 700; font-size: .88rem; color: var(--ink); }
-.form input, .form textarea {
-    width: 100%; padding: 13px 15px; border: 1px solid var(--border); border-radius: 12px;
-    font-family: var(--font-body); font-size: 1rem; color: var(--ink); background: var(--bg);
-    transition: border-color .2s, box-shadow .2s, background .2s;
-}
-.form textarea { resize: vertical; }
-.form input:focus, .form textarea:focus { outline: none; border-color: var(--violet); background: #fff; box-shadow: 0 0 0 4px rgba(91, 33, 182, .12); }
-
-.footer { background: var(--ink); color: #8E88A3; border-top: 1px solid rgba(255, 255, 255, .08); font-size: .9rem; }
-.footer-inner { display: flex; justify-content: space-between; align-items: center; padding-top: 22px; padding-bottom: 22px; }
-.footer a { color: #CFC9DE; text-decoration: none; }
-.footer a:hover { color: #fff; }
-
-/* ---------- Apparition au défilement ---------- */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
-.reveal.is-visible { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) {
-    .caret { animation: none; }
-    html { scroll-behavior: auto; }
-    .reveal { opacity: 1; transform: none; transition: none; }
-}
-
-:focus-visible { outline: 3px solid #A78BFA; outline-offset: 3px; border-radius: 6px; }
-
-/* ---------- Responsive ---------- */
+/* --- 5.6 Adaptation aux écrans plus petits --- */
 @media (max-width: 1020px) {
-    .missions { grid-template-columns: 1fr; }
-    .hobbies { grid-template-columns: repeat(2, 1fr); }
+    .hobbies { grid-template-columns: repeat(2, 1fr); }   /* centres d'intérêt sur 2 colonnes */
 }
-
 @media (max-width: 880px) {
-    .nav-toggle { display: grid; place-items: center; }
-    .nav-links {
-        position: absolute; top: var(--nav-h); left: 12px; right: 12px; flex-direction: column; align-items: stretch;
-        padding: 10px; background: var(--card); border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow);
-        opacity: 0; pointer-events: none; transform: translateY(-8px); transition: opacity .2s, transform .2s;
-    }
-    .nav-links.is-open { opacity: 1; pointer-events: auto; transform: none; }
-    .nav-links a { padding: 12px 16px; }
-    .nav-links a.nav-cta { margin: 6px 0 0; text-align: center; }
-
-    .hero { padding-top: calc(var(--nav-h) + 32px); }
-    .hero-grid { grid-template-columns: 1fr; gap: 48px; }
-    .hero-photo { order: -1; max-width: 220px; }
-    .float-card--top { left: -60px; }
-    .float-card--bottom { right: -60px; }
-    .stats { grid-template-columns: repeat(2, 1fr); margin-top: 56px; }
+    .stats { grid-template-columns: repeat(2, 1fr); margin-top: 56px; }   /* chiffres en 2 × 2 */
     .stat:nth-child(3) { border-left: none; }
     .stat:nth-child(n+3) { border-top: 1px solid var(--border); }
-    .jobs, .projects, .contact-grid { grid-template-columns: 1fr; }
-    .contact-grid { gap: 40px; }
-    .section { padding: 80px 0; }
     .block { margin-top: 64px; }
+    /* Métiers : toujours 3 colonnes, en plus compact */
+    .jobs { gap: 12px; }
+    .job { padding: 20px 16px; }
+    .job-icon { width: 42px; height: 42px; font-size: 1.05rem; margin-bottom: 12px; }
+    .job h3 { font-size: 1.02rem; }
+    .job p { font-size: .88rem; }
 }
-
+/* Petit écran : les métiers deviennent une rangée qu'on fait glisser avec le doigt */
+@media (max-width: 600px) {
+    .jobs {
+        display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px;
+        margin: 0 -16px; padding: 4px 16px 12px; scrollbar-width: none; scroll-padding-inline: 16px;
+    }
+    .jobs::-webkit-scrollbar { display: none; }   /* cache la barre de défilement */
+    .job { flex: 0 0 72%; scroll-snap-align: start; }
+}
 @media (max-width: 560px) {
-    .container, .nav-inner { padding: 0 16px; }
-    .float-card { padding: 9px 12px; }
-    .float-card i { width: 32px; height: 32px; }
-    .hero-photo { max-width: 190px; }
-    .float-card { display: none; }
     .stat { padding: 20px 18px; }
     .stat strong { font-size: 1.8rem; }
     .tools { grid-template-columns: repeat(3, 1fr); gap: 10px; }
     .tool { padding: 14px 6px 12px; font-size: .8rem; }
-    .tabs { display: flex; width: 100%; }
-    .tab { flex: 1; justify-content: center; padding: 10px 8px; font-size: .85rem; }
-    .tab i { display: none; }
-    .timeline::before { left: 17px; }
-    .tl-item { padding-left: 50px; }
-    .tl-marker { width: 36px; height: 36px; border-radius: 11px; font-size: .85rem; top: 20px; }
-    .card { padding: 22px 20px; }
-    .card-top { flex-wrap: wrap; }
-    .card-top .date { order: -1; flex-basis: 100%; width: max-content; flex-grow: 0; }
-    .card-top .date { display: inline-block; max-width: max-content; }
-    .org-logo { width: 44px; height: 44px; }
     .hobbies { gap: 12px; }
     .hobby { padding: 26px 12px; }
-    .form { padding: 22px; }
-    .form-row { grid-template-columns: 1fr; }
-    .hero-actions { gap: 10px; }
-    .hero-actions .btn:not(.btn-icon) { padding: 13px 18px; font-size: .94rem; }
-    .footer-inner { flex-direction: column; gap: 8px; }
 }
 
-/* =========================================================
-   DÉFILEMENT MODERNE — Parcours & Projets
-   ========================================================= */
 
-/* ---------- Parcours : panneau fixe + frise qui se remplit ---------- */
-.parcours-layout { display: grid; grid-template-columns: 300px 1fr; gap: 56px; align-items: start; }
+/* =====================================================================
+   6. ÉLÉMENTS COMMUNS AUX SECTIONS
+   ===================================================================== */
+.section { padding: 110px 0; }
+.section--tinted { background: var(--bg-tint); }   /* fond légèrement plus foncé */
+
+/* En-tête de section : petit numéro (« 02 »), grand titre, phrase d'intro */
+.section-head { max-width: 680px; margin-bottom: 48px; }
+.section-num { font-family: var(--font-title); font-weight: 700; font-size: .9rem; color: var(--violet); letter-spacing: .12em; }
+.section-head h2 { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -.02em; margin: 6px 0 12px; }
+.section-head p { margin: 0; font-size: 1.08rem; color: var(--muted); }
+
+/* Pastille de date (« 2023 — 2026 ») */
+.date {
+    display: inline-block; white-space: nowrap; padding: 5px 12px; border-radius: 999px;
+    background: var(--violet-soft); color: var(--violet); font-weight: 700; font-size: .82rem;
+}
+
+/* Étiquettes d'outils (SAS, SQL…) */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.chips span {
+    padding: 5px 12px; border-radius: 999px; font-size: .82rem; font-weight: 600;
+    border: 1px solid var(--violet-line); color: var(--violet-dark); background: #fff;
+}
+/* Variante grise pour les enseignements des formations */
+.chips--soft span { background: var(--bg); border-color: var(--border); color: var(--text); font-weight: 500; }
+
+/* Liste à puces violettes */
+.list { margin: 14px 0 0; padding-left: 18px; }
+.list li { margin-bottom: 6px; }
+.list li::marker { color: var(--violet); }
+
+@media (max-width: 880px) {
+    .section { padding: 80px 0; }
+}
+
+
+/* =====================================================================
+   7. PARCOURS — panneau fixe à gauche + frises à droite
+   ===================================================================== */
+
+/* --- 7.1 Mise en page : colonne de 320 px à gauche, frises à droite --- */
+.parcours-layout { display: grid; grid-template-columns: 320px 1fr; gap: 56px; align-items: start; }
+/* « sticky » : le panneau de gauche reste visible pendant qu'on fait défiler les frises */
 .parcours-side { position: sticky; top: calc(var(--nav-h) + 40px); }
 .parcours-side .section-head { margin-bottom: 28px; }
-.parcours-side .tabs { display: flex; flex-wrap: wrap; width: max-content; max-width: 100%; margin-bottom: 0; }
 
+/* --- 7.2 Boutons « Expériences / Formations » (liens vers chaque frise) --- */
+.tabs {
+    display: flex; flex-wrap: nowrap; gap: 4px; padding: 5px; width: max-content; max-width: 100%; margin-bottom: 0;
+    background: var(--card); border: 1px solid var(--border); border-radius: 999px;
+}
+.tab {
+    border: none; background: none; cursor: pointer; padding: 9px 14px; border-radius: 999px; text-decoration: none;
+    font-family: var(--font-body); font-weight: 700; font-size: .88rem; color: var(--text);
+    display: inline-flex; align-items: center; gap: 8px; transition: background .2s, color .2s;
+}
+.tab i { display: none; }   /* icônes masquées pour gagner de la place */
+.tab:hover { color: var(--violet); }
+/* Bouton de la frise en cours de lecture (classe ajoutée par script.js) */
+.tab.is-active { background: var(--violet); color: #fff; }
+
+/* --- 7.3 Encart violet : année et étape en cours (rempli par script.js) --- */
 .ticker {
-    margin-top: 28px; padding: 24px; border-radius: 20px; background: var(--ink); color: #fff;
+    margin-top: 28px; padding: 24px; border-radius: 20px; color: #fff;
+    background: linear-gradient(140deg, var(--violet) 0%, #4C1D95 100%);
     display: flex; flex-direction: column; gap: 4px; position: relative; overflow: hidden;
 }
-.ticker::before {
+.ticker::before {   /* halo lumineux en haut à droite */
     content: ""; position: absolute; right: -60px; top: -60px; width: 180px; height: 180px; border-radius: 50%;
-    background: radial-gradient(closest-side, rgba(167, 139, 250, .45), transparent);
+    background: radial-gradient(closest-side, rgba(255, 255, 255, .22), transparent);
 }
-.ticker-type { font-size: .74rem; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; color: #C4B5FD; }
-.ticker-date { font-family: var(--font-title); font-weight: 800; font-size: 2rem; letter-spacing: -.02em; line-height: 1.15; }
-.ticker-title { font-size: .95rem; color: #CFC9DE; min-height: 2.6em; }
-.ticker-foot { display: flex; align-items: center; gap: 12px; margin-top: 14px; font-family: var(--font-title); font-size: .85rem; color: #CFC9DE; }
-.ticker-bar { flex: 1; height: 4px; border-radius: 4px; background: rgba(255, 255, 255, .14); overflow: hidden; }
-.ticker-bar span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #8B5CF6, #C4B5FD); border-radius: 4px; transition: width .35s ease; }
+.ticker-type { font-size: .74rem; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; color: #DDD3F5; }   /* « EXPÉRIENCE » */
+.ticker-date { font-family: var(--font-title); font-weight: 800; font-size: 2rem; letter-spacing: -.02em; line-height: 1.15; }   /* « 2023 — 2026 » */
+.ticker-title { font-size: .95rem; color: #EDE7F8; min-height: 2.6em; }   /* « Data Analyst · Crédit Agricole » */
+.ticker-foot { display: flex; align-items: center; gap: 12px; margin-top: 14px; font-family: var(--font-title); font-size: .85rem; color: #EDE7F8; }   /* « 01 / 02 » + barre */
+.ticker-bar { flex: 1; height: 4px; border-radius: 4px; background: rgba(255, 255, 255, .22); overflow: hidden; }
+.ticker-bar span { display: block; height: 100%; width: 0; background: #fff; border-radius: 4px; transition: width .35s ease; }
+/* Petite animation quand l'année change */
 .ticker .is-swap { animation: tickerIn .45s ease; }
 @keyframes tickerIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-.timeline::before { background: var(--violet-line); }
-.tl-fill {
-    position: absolute; left: 23px; top: 8px; width: 2px; height: 0; z-index: 0;
-    background: linear-gradient(var(--violet), #A78BFA); border-radius: 2px; list-style: none;
-}
-.tl-fill::after {
-    content: ""; position: absolute; left: 50%; bottom: -6px; width: 12px; height: 12px; border-radius: 50%;
-    transform: translateX(-50%); background: var(--violet); box-shadow: 0 0 0 5px rgba(139, 92, 246, .22), 0 0 18px rgba(139, 92, 246, .7);
-}
-.tl-marker, .tl-marker--edu {
-    z-index: 1; background: var(--card); color: var(--muted); border: 2px solid var(--violet-line);
-    transition: background .4s, color .4s, border-color .4s, transform .4s;
-}
-.tl-item.is-reached .tl-marker { background: var(--violet); color: #fff; border-color: var(--violet); }
-.tl-item.is-current .tl-marker { transform: scale(1.08); box-shadow: 0 0 0 6px var(--bg-tint), 0 0 0 10px rgba(139, 92, 246, .18); }
-.tl-item .card { transition: box-shadow .4s, border-color .4s, transform .4s; }
-.tl-item.is-current .card { border-color: var(--violet-line); box-shadow: var(--shadow-hover); }
-.tl-item.reveal { transform: translateX(48px); }
-.tl-item.reveal.is-visible { transform: none; }
-.missions { grid-template-columns: 1fr; }
-.mission { border-left: 3px solid var(--violet); }
-
-/* ---------- Projets : défilement horizontal ---------- */
-.hs { position: relative; padding: 110px 0; }
-.hs-head .section-head { margin-bottom: 28px; }
-.hs-progress { display: flex; align-items: center; gap: 18px; margin-bottom: 30px; }
-.hs-count { font-family: var(--font-title); color: var(--muted); font-size: .95rem; white-space: nowrap; }
-.hs-count strong { color: var(--violet); font-size: 1.4rem; }
-.hs-bar { flex: 1; max-width: 380px; height: 4px; border-radius: 4px; background: var(--border); overflow: hidden; }
-.hs-bar span { display: block; height: 100%; width: 25%; background: linear-gradient(90deg, var(--violet), #A78BFA); border-radius: 4px; }
-.hs-hint { font-size: .85rem; color: var(--muted); font-weight: 600; white-space: nowrap; }
-.hs-hint i { margin-right: 6px; color: var(--violet); animation: nudge 1.6s ease-in-out infinite; }
-@keyframes nudge { 50% { transform: translateY(4px); } }
-
-.hs-viewport {
-    overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch;
-    padding: 10px 0 24px;
-}
-.hs-viewport::-webkit-scrollbar { display: none; }
-.projects.hs-track {
-    display: flex; gap: 24px; width: max-content; counter-reset: proj;
-    padding: 0 max(24px, calc((100vw - 1160px) / 2 + 24px));
-}
-.hs-track .project {
-    width: clamp(290px, 34vw, 430px); flex-shrink: 0; scroll-snap-align: center; position: relative;
-    min-height: 400px; counter-increment: proj; overflow: hidden;
-}
-.hs-track .project:not(.project--soon)::before {
-    content: "0" counter(proj); position: absolute; right: 18px; bottom: -22px;
-    font-family: var(--font-title); font-weight: 800; font-size: 7rem; line-height: 1;
-    color: var(--violet-soft); z-index: 0; pointer-events: none;
-}
-.hs-track .project > * { position: relative; z-index: 1; }
-.hs-track .project.reveal { transform: translateY(30px) scale(.97); }
-.hs-track .project.reveal.is-visible { transform: none; }
-.hs-track .project.reveal.is-visible:hover { transform: translateY(-6px); }
-
-/* Mode "épinglé" (ordinateur) : la section reste à l'écran et les cartes glissent */
-.hs.is-pinned { padding: 0; }
-.hs.is-pinned .hs-sticky {
-    position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; justify-content: center;
-    padding-top: var(--nav-h); overflow: hidden;
-}
-.hs.is-pinned .hs-viewport { overflow: visible; scroll-snap-type: none; }
-.hs.is-pinned .hs-track { will-change: transform; }
-
-@media (max-width: 1020px) {
-    .parcours-layout { grid-template-columns: 260px 1fr; gap: 36px; }
-}
-@media (max-width: 880px) {
-    .parcours-layout { grid-template-columns: 1fr; gap: 0; }
-    .parcours-side { position: static; }
-    .parcours-side .section-head { margin-bottom: 24px; }
-    .parcours-side .tabs { margin-bottom: 32px; }
-    .ticker { display: none; }
-    .hs { padding: 80px 0; }
-    .hs-hint { display: none; }
-}
-@media (max-width: 560px) {
-    .tl-fill { left: 17px; }
-    .parcours-side .tabs { width: 100%; }
-    .hs-track .project { width: 84vw; min-height: 0; }
-    .projects.hs-track { padding: 0 16px; gap: 14px; }
-}
-@media (prefers-reduced-motion: reduce) {
-    .hs-hint i { animation: none; }
-    .tl-item.reveal, .hs-track .project.reveal { transform: none; }
-}
-
-/* Ajustements */
-.parcours-layout { grid-template-columns: 320px 1fr; }
-.parcours-side .tabs { flex-wrap: nowrap; }
-.parcours-side .tab { padding: 9px 14px; font-size: .88rem; }
-.parcours-side .tab i { display: none; }
-.hs-track .project:not(.project--soon)::before { font-size: 6rem; bottom: -18px; opacity: .8; }
-.hs-hint--mob { display: none; }
-.hs-hint--mob i { animation-name: swipe; }
-@keyframes swipe { 50% { transform: translateX(-6px); } }
-@media (max-width: 1020px) { .parcours-layout { grid-template-columns: 280px 1fr; } }
-@media (max-width: 880px) {
-    .parcours-layout { grid-template-columns: 1fr; }
-    .hs-hint--mob { display: inline; }
-}
-@media (max-width: 560px) {
-    .parcours-side .tabs { flex-wrap: nowrap; }
-    .parcours-side .tab { flex: 1; justify-content: center; }
-}
-
-/* =========================================================
-   V3 — nom sur une ligne, mots-clés photo, parcours séparé
-   ========================================================= */
-.hero-name { font-size: clamp(2.2rem, 5.2vw, 4.4rem); white-space: nowrap; }
-
-/* Mots-clés autour de la photo */
-.hero-photo { max-width: 290px; }
-.keywords { list-style: none; margin: 0; padding: 0; }
-.kw {
-    position: absolute; display: flex; align-items: center; gap: 12px;
-    padding: 10px 14px; border-radius: 16px; background: rgba(255, 255, 255, .96);
-    border: 1px solid var(--border); box-shadow: var(--shadow); white-space: nowrap;
-    animation: floaty 6s ease-in-out infinite;
-}
-.kw > i {
-    width: 36px; height: 36px; flex-shrink: 0; display: grid; place-items: center; border-radius: 11px;
-    background: var(--violet-soft); color: var(--violet);
-}
-.kw strong { display: block; font-family: var(--font-title); font-size: .95rem; line-height: 1.2; color: var(--ink); }
-.kw span { font-size: .8rem; color: var(--muted); }
-.kw-tags { display: flex; gap: 6px; }
-.kw-tags span {
-    padding: 4px 10px; border-radius: 999px; background: var(--violet); color: #fff;
-    font-size: .78rem; font-weight: 700;
-}
-.kw-tags span:first-child { background: var(--ink); }
-.kw--1 { top: 2%; left: -96px; }
-.kw--2 { top: 46%; right: -110px; animation-delay: -2s; }
-.kw--3 { bottom: 0; left: -70px; animation-delay: -4s; }
-.kw--2 > i { background: var(--ink); color: #fff; }
-@keyframes floaty { 50% { transform: translateY(-6px); } }
-
-/* Parcours : deux blocs séparés */
-.parcours-side .tab { text-decoration: none; }
-.tl-group + .tl-group { margin-top: 56px; }
-.tl-group-title {
+/* --- 7.4 Deux frises séparées : « Expériences professionnelles » puis « Formations » --- */
+.tl-group + .tl-group { margin-top: 56px; }   /* espace entre les deux frises */
+.tl-group-title {   /* titre de chaque frise, avec un trait à droite */
     display: flex; align-items: center; gap: 12px; margin: 0 0 22px;
     font-size: 1.15rem; font-weight: 700; color: var(--ink);
 }
@@ -616,304 +584,212 @@ strong { color: var(--ink); font-weight: 700; }
 .tl-group[data-group="edu"] .tl-group-title i { background: var(--card); color: var(--violet); border: 2px solid var(--violet-line); }
 .tl-group-title::after { content: ""; flex: 1; height: 1px; background: var(--violet-line); }
 
-/* Alternance allégée */
-.missions-lite { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 0; }
-.missions-lite li {
-    display: grid; grid-template-columns: 92px 1fr; gap: 14px; align-items: baseline;
-    padding: 12px 0; border-top: 1px solid var(--border); font-size: .95rem; line-height: 1.55;
+/* --- 7.5 La frise : trait vertical + ronds + cartes --- */
+.timeline { list-style: none; margin: 0; padding: 0; position: relative; }
+/* Trait vertical pâle (fond de la frise) */
+.timeline::before {
+    content: ""; position: absolute; left: 23px; top: 8px; bottom: 8px; width: 2px;
+    background: var(--violet-line);
 }
-.missions-lite li:first-child { border-top: none; padding-top: 4px; }
-.missions-lite .tag {
-    justify-self: start; padding: 3px 9px; border-radius: 6px; background: var(--violet-soft); color: var(--violet);
-    font-size: .74rem; font-weight: 800; white-space: nowrap;
+/* Trait violet qui se remplit au fil du défilement (hauteur calculée par script.js) */
+.tl-fill {
+    position: absolute; left: 23px; top: 8px; width: 2px; height: 0; z-index: 0;
+    background: linear-gradient(var(--violet), #A78BFA); border-radius: 2px; list-style: none;
 }
+.tl-fill::after {   /* point lumineux au bout du trait */
+    content: ""; position: absolute; left: 50%; bottom: -6px; width: 12px; height: 12px; border-radius: 50%;
+    transform: translateX(-50%); background: var(--violet); box-shadow: 0 0 0 5px rgba(139, 92, 246, .22), 0 0 18px rgba(139, 92, 246, .7);
+}
+/* Chaque étape : décalée à droite pour laisser la place au marqueur */
+.tl-item { position: relative; padding-left: 76px; margin-bottom: 24px; }
+/* Marqueur carré avec icône, blanc tant qu'on ne l'a pas atteint */
+.tl-marker {
+    position: absolute; left: 0; top: 22px; width: 48px; height: 48px; border-radius: 14px; z-index: 1;
+    display: grid; place-items: center; font-size: 1.05rem;
+    background: var(--card); color: var(--muted); border: 2px solid var(--violet-line);
+    box-shadow: 0 0 0 6px var(--bg-tint);
+    transition: background .4s, color .4s, border-color .4s, transform .4s;
+}
+/* Étape atteinte : le marqueur devient violet (classe ajoutée par script.js) */
+.tl-item.is-reached .tl-marker { background: var(--violet); color: #fff; border-color: var(--violet); }
+/* Étape en cours de lecture : marqueur un peu plus gros + carte mise en avant */
+.tl-item.is-current .tl-marker { transform: scale(1.08); box-shadow: 0 0 0 6px var(--bg-tint), 0 0 0 10px rgba(139, 92, 246, .18); }
+.tl-item.is-current .card { border-color: var(--violet-line); box-shadow: var(--shadow-hover); }
 
-@media (max-width: 1320px) {
-    .kw--1 { left: -60px; }
-    .kw--2 { right: -40px; }
-    .kw--3 { left: -40px; }
+/* --- 7.6 Les cartes (une par expérience / formation) --- */
+.card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px 30px; box-shadow: var(--shadow); transition: box-shadow .25s, transform .25s;
 }
-@media (max-width: 880px) {
-    .hero-photo { max-width: 100%; display: flex; flex-direction: column; align-items: center; gap: 22px; }
-    .hero-photo::after { display: none; }
-    .photo-frame { width: 220px; }
-    .keywords { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-    .kw { position: static; animation: none; box-shadow: none; }
-}
-@media (max-width: 560px) {
-    .hero-name { font-size: clamp(1.9rem, 10vw, 2.6rem); }
-    .photo-frame { width: 180px; }
-    .kw { padding: 8px 12px; }
-    .kw > i { width: 30px; height: 30px; }
-    .missions-lite li { grid-template-columns: 1fr; gap: 6px; }
-}
-@media (prefers-reduced-motion: reduce) { .kw { animation: none; } }
-@media (min-width: 881px) and (max-width: 1060px) {
-    .hero-photo { display: flex; flex-direction: column; align-items: center; gap: 18px; }
-    .hero-photo::after { display: none; }
-    .photo-frame { width: 230px; }
-    .keywords { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-    .kw { position: static; animation: none; }
-}
-@media (min-width: 881px) and (max-width: 1060px) {
-    .kw-tags { flex-wrap: wrap; }
-    .kw { max-width: 100%; white-space: normal; }
-}
-@media (max-width: 420px) { .kw-tags { flex-wrap: wrap; } .kw { white-space: normal; } }
+.card:hover { box-shadow: var(--shadow-hover); }
+.tl-item .card { transition: box-shadow .4s, border-color .4s, transform .4s; }
+/* En-tête de carte : logo · titre + entreprise · date */
+.card-top { display: flex; align-items: center; gap: 16px; }
+.card-title { flex: 1; min-width: 0; }
+.card-title h3 { font-size: 1.25rem; }
+.card-title h3 small { font-family: var(--font-body); font-weight: 600; font-size: .85rem; color: var(--muted); }
+.org { margin: 4px 0 0; color: var(--muted); font-size: .95rem; }
+.org-logo { width: 52px; height: 52px; object-fit: contain; border-radius: 12px; border: 1px solid var(--border); padding: 5px; background: #fff; flex-shrink: 0; }
 
-/* =========================================================
-   V4 — mots-clés sur la photo, missions sans cadres,
-        métiers et recherche côte à côte
-   ========================================================= */
-
-/* Mots-clés qui survolent la photo, à toutes les tailles */
-.hero-photo { position: relative; width: 100%; max-width: 300px; }
-.kw { position: absolute; z-index: 2; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); background: rgba(255, 255, 255, .9); }
-.kw--1 { top: 4%; left: -22%; right: auto; bottom: auto; }
-.kw--2 { top: 47%; right: -26%; left: auto; bottom: auto; }
-.kw--3 { bottom: 4%; left: -14%; right: auto; top: auto; }
-
-@media (max-width: 1320px) { .kw--2 { right: -14%; } }
-@media (min-width: 881px) and (max-width: 1060px) {
-    .hero-photo { display: block; max-width: 260px; }
-    .hero-photo::after { display: block; }
-    .photo-frame { width: 100%; }
-    .keywords { display: block; }
-    .kw { position: absolute; animation: floaty 6s ease-in-out infinite; }
-    .kw > i { display: none; }
-    .kw--1 { left: -12%; }
-    .kw--2 { right: -8%; }
-    .kw--3 { left: -6%; }
-}
-@media (max-width: 880px) {
-    .hero-photo { display: block; max-width: 280px; margin: 0 auto 8px; }
-    .hero-photo::after { display: block; }
-    .photo-frame { width: 100%; }
-    .keywords { display: block; }
-    .kw { position: absolute; animation: floaty 6s ease-in-out infinite; box-shadow: var(--shadow); }
-    .kw--1 { left: -18%; }
-    .kw--2 { right: -22%; }
-    .kw--3 { left: -10%; }
-}
-@media (max-width: 560px) {
-    .hero-photo { max-width: 230px; }
-    .photo-frame { width: 100%; }
-    .kw { padding: 6px 10px; gap: 8px; border-radius: 12px; white-space: nowrap; }
-    .kw > i { display: none; }
-    .kw strong { font-size: .8rem; }
-    .kw span { font-size: .68rem; }
-    .kw-tags { flex-wrap: nowrap; gap: 4px; }
-    .kw-tags span { font-size: .66rem; padding: 3px 7px; }
-    .kw--1 { top: 2%; left: -14%; }
-    .kw--2 { top: 46%; right: -18%; }
-    .kw--3 { bottom: 2%; left: -8%; }
-}
-
-/* Alternance : détail conservé, sans cadres ni étiquettes */
+/* --- 7.7 Missions du Crédit Agricole (numérotées 1, 2, 3) --- */
 .missions-flat { margin-top: 18px; display: grid; gap: 0; }
-.mf { padding: 14px 0; border-top: 1px solid var(--border); }
+.mf { padding: 20px 0; border-top: 1px solid var(--border); }   /* trait fin entre les missions */
 .mf:first-child { border-top: none; padding-top: 4px; }
-.mf h4 { font-size: 1rem; color: var(--ink); margin: 0; }
-.mf .list { margin-top: 8px; font-size: .94rem; }
-.mf .list li { margin-bottom: 4px; }
-
-/* Métiers : toujours côte à côte */
-.jobs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-@media (max-width: 880px) {
-    .jobs { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-    .job { padding: 20px 16px; }
-    .job-icon { width: 42px; height: 42px; font-size: 1.05rem; margin-bottom: 12px; }
-    .job h3 { font-size: 1.02rem; }
-    .job p { font-size: .88rem; }
-}
-@media (max-width: 600px) {
-    .jobs {
-        display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px;
-        margin: 0 -16px; padding: 4px 16px 12px; scrollbar-width: none;
-    }
-    .jobs::-webkit-scrollbar { display: none; }
-    .job { flex: 0 0 72%; scroll-snap-align: start; }
-}
-
-/* Ce que je recherche : toujours côte à côte */
-@media (max-width: 560px) {
-    .seeking { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-    .seek { display: flex; flex-direction: column; align-items: flex-start; padding: 12px 10px; column-gap: 0; }
-    .seek i { grid-row: auto; width: 28px; height: 28px; font-size: .8rem; margin-bottom: 8px; }
-    .seek-label { font-size: .6rem; letter-spacing: .04em; }
-    .seek strong { font-size: .92rem; }
-    .seek-sub { font-size: .72rem; }
-}
-@media (max-width: 600px) { .jobs { scroll-padding-inline: 16px; } }
-
-/* =========================================================
-   V5 — mots-clés transparents, métiers à la suite,
-        expériences plus lisibles
-   ========================================================= */
-
-/* Mots-clés en verre transparent sur la photo */
-.kw {
-    background: rgba(28, 21, 48, .32);
-    border: 1px solid rgba(255, 255, 255, .35);
-    box-shadow: 0 8px 24px rgba(28, 21, 48, .18);
-    backdrop-filter: blur(10px) saturate(140%);
-    -webkit-backdrop-filter: blur(10px) saturate(140%);
-}
-.kw strong { color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, .35); }
-.kw span { color: rgba(255, 255, 255, .88); text-shadow: 0 1px 2px rgba(0, 0, 0, .35); }
-.kw > i, .kw--2 > i { background: rgba(255, 255, 255, .2); color: #fff; }
-.kw-tags span, .kw-tags span:first-child {
-    background: rgba(255, 255, 255, .2); border: 1px solid rgba(255, 255, 255, .4);
-    color: #fff; text-shadow: none;
-}
-@media (max-width: 880px) { .kw { box-shadow: 0 8px 24px rgba(28, 21, 48, .18); } }
-
-/* Expériences : lecture en deux colonnes (thème / détail) */
-.mf { padding: 20px 0; }
-.mf h4 { display: flex; align-items: center; gap: 10px; font-size: 1.05rem; margin-bottom: 12px; }
-.mf-num {
+.mf h4 { display: flex; align-items: center; gap: 10px; font-size: 1.05rem; color: var(--ink); margin: 0 0 12px; }
+.mf-num {   /* carré violet avec le numéro */
     width: 26px; height: 26px; flex-shrink: 0; border-radius: 8px; display: grid; place-items: center;
     background: var(--violet); color: #fff; font-size: .8rem; font-weight: 800;
 }
+
+/* --- 7.8 Lignes « THÈME | détail » (Objectif, Modélisation, Scoring…) --- */
 .kv { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .kv li { display: grid; grid-template-columns: 150px 1fr; gap: 16px; align-items: baseline; font-size: .96rem; line-height: 1.55; }
-.kv .k {
-    font-size: .76rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--violet);
+.kv .k { font-size: .76rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--violet); }   /* thème */
+.kv .v { color: var(--text); min-width: 0; }   /* détail */
+.mf .kv { padding-left: 36px; }   /* aligné sous le titre de la mission */
+.kv--solo { margin-top: 18px; }   /* version Cotral Lab (sans missions numérotées) */
+
+/* --- 7.9 Animation d'entrée : les étapes glissent depuis la droite --- */
+.tl-item.reveal { transform: translateX(48px); }
+.tl-item.reveal.is-visible { transform: none; }
+
+/* --- 7.10 Adaptation aux écrans plus petits --- */
+@media (max-width: 1020px) {
+    .parcours-layout { grid-template-columns: 280px 1fr; gap: 36px; }
 }
-.kv .v { color: var(--text); min-width: 0; }
-.mf .kv { padding-left: 36px; }
-.kv--solo { margin-top: 18px; }
+/* Tablette / téléphone : une seule colonne, l'encart violet disparaît */
+@media (max-width: 880px) {
+    .parcours-layout { grid-template-columns: 1fr; gap: 0; }
+    .parcours-side { position: static; }
+    .parcours-side .section-head { margin-bottom: 24px; }
+    .tabs { margin-bottom: 32px; }
+    .ticker { display: none; }
+}
 @media (max-width: 560px) {
+    .tabs { width: 100%; }
+    .tab { flex: 1; justify-content: center; }
+    .timeline::before, .tl-fill { left: 17px; }
+    .tl-item { padding-left: 50px; }
+    .tl-marker { width: 36px; height: 36px; border-radius: 11px; font-size: .85rem; top: 20px; }
+    .card { padding: 22px 20px; }
+    /* La date passe au-dessus du titre */
+    .card-top { flex-wrap: wrap; }
+    .card-top .date { order: -1; flex-basis: 100%; flex-grow: 0; width: max-content; max-width: max-content; }
+    .org-logo { width: 44px; height: 44px; }
+    /* « THÈME » au-dessus du détail au lieu d'à côté */
     .kv li { grid-template-columns: 1fr; gap: 2px; }
     .mf .kv { padding-left: 0; }
 }
 
-/* =========================================================
-   V6 — mots-clés en orbite autour de la photo
-   ========================================================= */
-@property --orbit { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 
-.hero-photo { --r: 125px; }
-@media (min-width: 881px) { .hero-photo { justify-self: start; margin-left: 20px; } }
-.kw, .kw--1, .kw--2, .kw--3 {
-    top: 50%; left: 50%; right: auto; bottom: auto;
-    transform: translate(-50%, -50%) rotate(calc(var(--start) + var(--orbit))) translateX(var(--r)) rotate(calc(-1 * (var(--start) + var(--orbit))));
-    animation: orbit 40s linear infinite;
-    background: rgba(28, 21, 48, .16);
-    border-color: rgba(255, 255, 255, .45);
-    backdrop-filter: blur(6px) saturate(140%);
-    -webkit-backdrop-filter: blur(6px) saturate(140%);
-    white-space: nowrap;
-}
-.kw--1 { --start: -135deg; }
-.kw--2 { --start: -15deg; }
-.kw--3 { --start: 105deg; }
-.kw--2 > i { display: none; }
-.kw-tags { flex-wrap: nowrap; }
-.hero-photo:hover .kw { animation-play-state: paused; }
-@keyframes orbit { to { --orbit: 360deg; } }
+/* =====================================================================
+   8. PROJETS — cartes qui défilent sur le côté
+   Sur ordinateur, la section reste « épinglée » à l'écran pendant qu'on
+   fait défiler, et script.js fait glisser les cartes vers la gauche.
+   Sur téléphone, on fait simplement glisser les cartes avec le doigt.
+   ===================================================================== */
+.hs { position: relative; padding: 110px 0; }
+.hs-head .section-head { margin-bottom: 28px; }
 
-@media (max-width: 1320px) { .hero-photo { --r: 112px; } }
-@media (min-width: 881px) and (max-width: 1060px) {
-    .hero-photo { --r: 100px; margin-left: 0; }
-    .kw { padding: 7px 11px; }
-    .kw strong { font-size: .85rem; }
-    .kw span { font-size: .7rem; }
-    .kw-tags span { font-size: .68rem; padding: 3px 8px; }
-}
-@media (max-width: 880px) { .hero-photo { --r: 110px; } }
-@media (max-width: 560px) { .hero-photo { --r: 92px; } }
-@media (prefers-reduced-motion: reduce) { .kw { animation: none; } }
-/* Mots-clés compacts pour l'orbite */
-.kw--2 { padding: 8px; }
-.kw--2 .kw-tags { flex-direction: column; align-items: stretch; gap: 4px; }
-.kw--2 .kw-tags span { text-align: center; }
-@media (max-width: 1320px) { .kw--1 > i, .kw--3 > i { display: none; } }
-@media (min-width: 881px) and (max-width: 1180px) { .hero-photo { --r: 98px; } }
-@media (min-width: 881px) and (max-width: 960px) { .hero-photo { --r: 84px; } }
-.kw, .kw--1, .kw--2, .kw--3 { background: rgba(28, 21, 48, .24); backdrop-filter: blur(4px) saturate(140%); -webkit-backdrop-filter: blur(4px) saturate(140%); }
-.kw strong, .kw span { text-shadow: 0 1px 3px rgba(0, 0, 0, .55); }
+/* --- 8.1 Compteur « 01 / 04 » + barre de progression + indication --- */
+.hs-progress { display: flex; align-items: center; gap: 18px; margin-bottom: 30px; }
+.hs-count { font-family: var(--font-title); color: var(--muted); font-size: .95rem; white-space: nowrap; }
+.hs-count strong { color: var(--violet); font-size: 1.4rem; }
+.hs-bar { flex: 1; max-width: 380px; height: 4px; border-radius: 4px; background: var(--border); overflow: hidden; }
+.hs-bar span { display: block; height: 100%; width: 25%; background: linear-gradient(90deg, var(--violet), #A78BFA); border-radius: 4px; }
+/* « Faites défiler » (ordinateur) / « Glissez » (téléphone), avec une flèche animée */
+.hs-hint { font-size: .85rem; color: var(--muted); font-weight: 600; white-space: nowrap; }
+.hs-hint i { margin-right: 6px; color: var(--violet); animation: nudge 1.6s ease-in-out infinite; }
+.hs-hint--mob { display: none; }
+.hs-hint--mob i { animation-name: swipe; }
+@keyframes nudge { 50% { transform: translateY(4px); } }   /* flèche qui descend */
+@keyframes swipe { 50% { transform: translateX(-6px); } }  /* main qui glisse */
 
-/* =========================================================
-   V7 — pastilles séparées, très transparentes, en orbite
-   ========================================================= */
-.kw.kw-chip {
-    display: inline-flex; align-items: center; gap: 0;
-    padding: 6px 13px; border-radius: 999px;
-    font-size: .8rem; font-weight: 600; color: #fff; line-height: 1.2;
-    background: rgba(28, 21, 48, .1);
-    border: 1px solid rgba(255, 255, 255, .55);
-    box-shadow: 0 4px 14px rgba(28, 21, 48, .12);
-    backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
-    text-shadow: 0 1px 3px rgba(0, 0, 0, .6), 0 0 8px rgba(28, 21, 48, .35);
+/* --- 8.2 Zone de défilement et rangée de cartes --- */
+.hs-viewport {
+    overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    padding: 10px 0 24px;
 }
-.kw.kw-chip strong {
-    display: inline; font-family: var(--font-body); font-size: inherit; font-weight: 800; color: #fff;
+.hs-viewport::-webkit-scrollbar { display: none; }
+.hs-track {
+    display: flex; gap: 24px; width: max-content;
+    /* marge à gauche alignée sur le reste du contenu */
+    padding: 0 max(24px, calc((100vw - 1160px) / 2 + 24px));
+    counter-reset: proj;   /* compteur pour les grands numéros 01, 02, 03 */
 }
-.hero-photo { --r: 128px; }
-@media (max-width: 1320px) { .hero-photo { --r: 120px; } }
-@media (min-width: 881px) and (max-width: 1180px) { .hero-photo { --r: 108px; } .kw.kw-chip { font-size: .74rem; padding: 5px 11px; } }
-@media (min-width: 881px) and (max-width: 960px) { .hero-photo { --r: 100px; } }
-@media (max-width: 880px) { .hero-photo { --r: 118px; } }
-@media (max-width: 560px) { .hero-photo { --r: 100px; } .kw.kw-chip { font-size: .68rem; padding: 4px 9px; } }
-.kw.kw-chip--two { flex-direction: column; align-items: center; border-radius: 14px; padding: 6px 12px; gap: 1px; text-align: center; }
-.kw.kw-chip--two span { font-size: .9em; color: #fff; font-weight: 600; }
-/* Rayons calculés pour que les pastilles ne se croisent jamais */
-.hero-photo { --r: 132px; }
-@media (max-width: 1320px) { .hero-photo { --r: 130px; } }
-@media (min-width: 881px) and (max-width: 1180px) { .hero-photo { --r: 120px; } }
-@media (min-width: 881px) and (max-width: 960px) {
-    .hero-photo { --r: 110px; }
-    .kw.kw-chip { font-size: .68rem; padding: 4px 9px; }
-}
-@media (max-width: 880px) { .hero-photo { --r: 132px; } }
-@media (max-width: 560px) { .hero-photo { --r: 110px; } }
-@media (min-width: 881px) and (max-width: 960px) { .hero-photo { --r: 105px; } }
 
-/* V8 — lieu, permis et email sur une seule ligne */
-.hero-meta { flex-wrap: nowrap; gap: 8px 18px; white-space: nowrap; font-size: .9rem; }
-.hero-meta li { display: flex; align-items: center; }
+/* --- 8.3 Une carte de projet --- */
+.project {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px;
+    box-shadow: var(--shadow); display: flex; flex-direction: column; transition: transform .25s, box-shadow .25s;
+    width: clamp(290px, 34vw, 430px); min-height: 400px; flex-shrink: 0;
+    scroll-snap-align: center; position: relative; overflow: hidden;
+    counter-increment: proj;
+}
+.project:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+/* Grand numéro pâle en fond (01, 02, 03), généré automatiquement */
+.project:not(.project--soon)::before {
+    content: "0" counter(proj); position: absolute; right: 18px; bottom: -18px;
+    font-family: var(--font-title); font-weight: 800; font-size: 6rem; line-height: 1;
+    color: var(--violet-soft); opacity: .8; z-index: 0; pointer-events: none;
+}
+.project > * { position: relative; z-index: 1; }   /* le contenu passe devant le numéro */
+.project-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.project-icon {
+    width: 50px; height: 50px; border-radius: 14px; display: grid; place-items: center;
+    background: var(--violet-soft); color: var(--violet); font-size: 1.25rem;
+}
+.project h3 { font-size: 1.2rem; }
+.team { margin: 6px 0 0; color: var(--muted); font-size: .9rem; }   /* « Équipe de 3 » */
+.team i { color: var(--violet); margin-right: 6px; }
+.project .chips { margin-top: auto; padding-top: 18px; }   /* étiquettes collées en bas de la carte */
+
+/* Carte en pointillés « D'autres projets arrivent… » */
+.project--soon {
+    align-items: center; justify-content: center; text-align: center; background: transparent;
+    border: 2px dashed var(--violet-line); box-shadow: none;
+}
+.project--soon:hover { transform: none; box-shadow: none; border-color: var(--violet); }
+.project--soon i { font-size: 1.4rem; color: var(--violet); width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--violet-soft); margin-bottom: 14px; }
+.project--soon p { margin: 6px 0 0; color: var(--muted); }
+
+/* Animation d'entrée des cartes */
+.project.reveal { transform: translateY(30px) scale(.97); }
+.project.reveal.is-visible { transform: none; }
+.project.reveal.is-visible:hover { transform: translateY(-6px); }
+
+/* --- 8.4 Mode « épinglé » (ordinateur, classe ajoutée par script.js) --- */
+.hs.is-pinned { padding: 0; }
+.hs.is-pinned .hs-sticky {
+    position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; justify-content: center;
+    padding-top: var(--nav-h); overflow: hidden;
+}
+.hs.is-pinned .hs-viewport { overflow: visible; scroll-snap-type: none; }
+.hs.is-pinned .hs-track { will-change: transform; }
+
+/* --- 8.5 Adaptation aux écrans plus petits --- */
+@media (max-width: 880px) {
+    .hs { padding: 80px 0; }
+    .hs-hint--desk { display: none; }
+    .hs-hint--mob { display: inline; }
+}
 @media (max-width: 560px) {
-    .hero-meta { gap: 12px; font-size: .74rem; }
-    .hero-meta i { margin-right: 4px; }
+    .hs-track { padding: 0 16px; gap: 14px; }
+    .project { width: 84vw; min-height: 0; }
 }
-@media (max-width: 360px) { .hero-meta { flex-wrap: wrap; } }
-.hero-text { min-width: 0; }
-@media (max-width: 1060px) { .hero-meta { font-size: .8rem; gap: 14px; } }
-@media (max-width: 560px) { .hero-meta { font-size: .68rem; gap: 10px; } .hero-meta i { margin-right: 3px; } }
-/* Les animations d'entrée ne doivent jamais élargir la page */
-main { overflow-x: clip; }
 
-/* V9 — encart services dans Contact */
-.services {
-    margin: 0 0 28px; padding: 20px 22px; border-radius: 18px;
-    background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .12);
-}
-.services-q { margin: 0 0 12px; font-family: var(--font-title); font-weight: 700; font-size: 1.1rem; color: #fff; }
-.services-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.services-list li { display: flex; align-items: center; gap: 12px; font-size: .98rem; }
-.services-list i {
-    width: 34px; height: 34px; flex-shrink: 0; border-radius: 10px; display: grid; place-items: center;
-    background: var(--violet); color: #fff; font-size: .9rem;
-}
-.services-cta { margin: 14px 0 0; font-weight: 700; color: #C4B5FD; }
-.services-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.services-chips li {
-    display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px 7px 8px; border-radius: 999px;
-    background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .16);
-    color: #fff; font-weight: 600; font-size: .92rem;
-}
-.services-chips i {
-    width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
-    background: var(--violet); color: #fff; font-size: .72rem;
-}
-.services-q { margin-bottom: 6px; }
-.services-line { margin: 0; font-size: 1.02rem; color: #E4DEF2; }
-.services-line strong { color: #C4B5FD; }
-.services-line strong { white-space: nowrap; }
 
-/* V10 — encart « besoins data » compact */
-.services { display: none; }
+/* =====================================================================
+   9. CONTACT (fond foncé)
+   ===================================================================== */
+.contact { background: var(--ink); color: #CFC9DE; }
+.contact strong { color: #fff; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }   /* texte | formulaire */
+.section-num--light { color: #C4B5FD; }
+.contact h2 { color: #fff; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -.02em; margin: 6px 0 14px; }
+.contact-intro > p { font-size: 1.08rem; margin: 0 0 30px; }
+
+/* --- 9.1 Encart « Votre entreprise a des besoins data ? » --- */
 .needs {
     display: flex; align-items: center; gap: 14px; margin: 0 0 28px; padding: 10px 10px 10px 12px;
     border-radius: 16px; text-decoration: none; color: inherit; position: relative; isolation: isolate;
@@ -929,25 +805,75 @@ main { overflow-x: clip; }
 .needs-text { flex: 1; min-width: 0; display: grid; gap: 1px; line-height: 1.35; }
 .needs-text strong { color: #fff; font-size: .95rem; }
 .needs-text span { color: #B9B2CC; font-size: .84rem; }
-.needs-cta {
+.needs-cta {   /* bouton blanc « Contactez-moi → » */
     flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
     padding: 8px 14px; border-radius: 999px; background: #fff; color: var(--ink); font-weight: 700; font-size: .82rem;
 }
 .needs-cta i { transition: transform .25s; }
-.needs:hover .needs-cta i { transform: translateX(3px); }
+.needs:hover .needs-cta i { transform: translateX(3px); }   /* la flèche avance au survol */
+
+/* --- 9.2 Coordonnées (email, téléphone, LinkedIn, CV…) --- */
+.contact-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+.contact-list li { display: flex; align-items: center; gap: 14px; }
+.contact-list i { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(255, 255, 255, .08); color: #C4B5FD; }
+.contact-list a { color: #fff; text-decoration: none; }
+.contact-list a:hover { color: #C4B5FD; }
+
+/* --- 9.3 Formulaire (envoyé via Formspree) --- */
+.form { background: #fff; border-radius: 22px; padding: 30px; display: grid; gap: 16px; box-shadow: 0 30px 60px rgba(0, 0, 0, .25); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }   /* Nom | Entreprise */
+.form label { display: grid; gap: 7px; font-weight: 700; font-size: .88rem; color: var(--ink); }
+.form input, .form textarea {
+    width: 100%; padding: 13px 15px; border: 1px solid var(--border); border-radius: 12px;
+    font-family: var(--font-body); font-size: 1rem; color: var(--ink); background: var(--bg);
+    transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.form textarea { resize: vertical; }
+/* Champ dans lequel on écrit : contour violet */
+.form input:focus, .form textarea:focus { outline: none; border-color: var(--violet); background: #fff; box-shadow: 0 0 0 4px rgba(91, 33, 182, .12); }
+
+@media (max-width: 880px) {
+    .contact-grid { grid-template-columns: 1fr; gap: 40px; }   /* formulaire sous le texte */
+}
 @media (max-width: 560px) {
     .needs { flex-wrap: wrap; }
     .needs-text { flex-basis: calc(100% - 52px); }
-    .needs-cta { margin-left: 52px; }
+    .needs-cta { margin-left: 52px; }   /* le bouton passe sous le texte */
+    .form { padding: 22px; }
+    .form-row { grid-template-columns: 1fr; }
 }
-/* V11 — indisponibilité */
-.contact-intro > p.away {
-    display: inline-flex; align-items: center; gap: 10px; margin: -14px 0 26px; padding: 8px 14px;
-    border-radius: 999px; background: rgba(251, 191, 36, .12); border: 1px solid rgba(251, 191, 36, .35);
-    color: #FCD34D; font-size: .9rem; font-weight: 600;
+
+
+/* =====================================================================
+   10. PIED DE PAGE
+   ===================================================================== */
+.footer { background: var(--ink); color: #8E88A3; border-top: 1px solid rgba(255, 255, 255, .08); font-size: .9rem; }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; padding-top: 22px; padding-bottom: 22px; }
+.footer a { color: #CFC9DE; text-decoration: none; }
+.footer a:hover { color: #fff; }
+
+@media (max-width: 560px) {
+    .footer-inner { flex-direction: column; gap: 8px; }
 }
-.eyebrow-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
-.eyebrow-row .eyebrow { margin: 0; }
-.eyebrow--away { background: #FEF6E4; border-color: #F5D9A0; color: #8A5A00; }
-.eyebrow--away i { color: #C2850C; }
-@media (max-width: 560px) { .eyebrow-row .eyebrow { font-size: .8rem; padding: 6px 12px; } }
+
+
+/* =====================================================================
+   11. ANIMATIONS D'APPARITION + ACCESSIBILITÉ
+   ===================================================================== */
+
+/* Les éléments marqués class="reveal" apparaissent en fondu quand on les
+   atteint en défilant (script.js leur ajoute la classe is-visible) */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* Contour bien visible quand on navigue au clavier (touche Tab) */
+:focus-visible { outline: 3px solid #A78BFA; outline-offset: 3px; border-radius: 6px; }
+
+/* Les personnes qui ont réduit les animations dans les réglages de leur
+   appareil voient la page sans mouvement */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .tl-item.reveal, .project.reveal { transform: none; }
+    .caret, .kw.kw-chip, .hs-hint i { animation: none; }
+}
